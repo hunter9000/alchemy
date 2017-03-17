@@ -1,0 +1,71 @@
+
+
+<!--{{grid}}-->
+
+
+<!--
+{
+    "id":1,
+    "resourceInventory":{
+        "GRASS":{"id":3,"type":"GRASS","amount":0},
+        "DIRT":{"id":5,"type":"DIRT","amount":0},
+        "WATER":{"id":1,"type":"WATER","amount":0},
+        "WOOD":{"id":2,"type":"WOOD","amount":0},
+        "ROCK":{"id":4,"type":"ROCK","amount":0}
+    },
+    "units":[],
+    "pipes":[]
+}
+-->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div ng-repeat="row in grid.cells">
+                <cell ng-repeat="cell in row" cell="cell"/>
+            </div>
+        </div>
+
+<!--
+    {"id":13,"x":null,"y":null,"type":"Transmuter","resourceOutputType":{"displayName":"Dirt"},"resourceInputType":{"displayName":"Wood"},"purchased":true,"costAmount":0,"costResourceType":{"displayName":"Wood"},"canAfford":false,"isPlaced":false}
+    {"id":12,"x":null,"y":null,"type":"Stockpile","resourceOutputType":null,"resourceInputType":null,"purchased":true,"costAmount":0,"costResourceType":{"displayName":"Wood"},"canAfford":false,"isPlaced":false}
+-->
+        <div class="col-md-3">
+            <div ng-repeat="unit in grid.purchasedUnits">
+                {{unit.type}}: [{{unit.resourceInputType.displayName}}-->{{unit.resourceOutputType.displayName}}]
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div ng-repeat="(resourceType, resource) in grid.resourceInventory">
+                {{resource.type.displayName}}: {{resource.amount}}
+            </div>
+        </div>
+    </div>
+
+    <!--
+    {
+        "id":1,
+        "x":null,
+        "y":null,
+        "type":"Source",
+        "resourceOutputType":{"displayName":"Wood"},
+        "resourceInputType":null,
+        "purchased":false,
+        "costAmount":10,
+        "costResourceType":{"displayName":"Wood"},
+        "isPlaced":false
+    }
+    -->
+
+    <div class="row">
+        <div ng-repeat="unit in grid.purchasableUnits">
+            {{unit.type}}: [{{unit.resourceInputType.displayName}}-->{{unit.resourceOutputType.displayName}}] Cost: {{unit.costAmount}} {{unit.costResourceType.displayName}}
+            afford:{{unit.canAfford}}
+            <button class="btn btn-primary" ng-show="unit.canAfford" ng-click="purchaseUnit(unit)">purchase</button>
+
+        </div>
+    </div>
+</div>
+
+
+<button clas="btn btn-secondary" ng-click="delete()">delete</button>

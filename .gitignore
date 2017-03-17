@@ -1,0 +1,4 @@
+src/main/resources/public/bower_components/
+src/main/resources/bower_components/
+target/
+.idea/
