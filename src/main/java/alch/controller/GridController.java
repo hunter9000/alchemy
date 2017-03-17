@@ -7,6 +7,7 @@ import alch.model.Unit;
 import alch.model.user.User;
 import alch.repository.GridRepository;
 import alch.request.UnitRequest;
+import alch.security.BadRequestException;
 import alch.util.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -55,19 +56,41 @@ public class GridController {
         gridRepository.delete(grid);
     }
 
-    @RequestMapping(value = "/api/grid/{gridId}/units/", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/grid/{gridId}/units/", method = RequestMethod.POST)
     public void purchaseUnit(@PathVariable Long gridId, @RequestBody UnitRequest unitRequest) {
         Grid grid = gridRepository.findOne(gridId);
 
-        for (Unit unit : grid.getUnits()) {
-            if (unit.getId().equals(unitRequest.getId())) {
-                ResourceInventory inv = grid.getResourceInventory().get(unit.getCostResourceType());
-                inv.setAmount(inv.getAmount() - unit.getCostAmount());
-                unit.setPurchased(true);
-                gridRepository.save(grid);
-                return;
-            }
+//        for (Unit unit : grid.getUnits()) {
+//            if (unit.getId().equals(unitRequest.getId())) {
+
+        Unit unit = GridManager.getUnit(grid, unitRequest.getId());
+        if (unit == null) {
+            throw new BadRequestException(/*"unit id invalid"*/);
         }
+
+        ResourceInventory inv = grid.getResourceInventory().get(unit.getCostResourceType());
+        inv.setAmount(inv.getAmount() - unit.getCostAmount());
+        unit.setPurchased(true);
+        gridRepository.save(grid);
+        return;
+//            }
+//        }
+    }
+
+    @RequestMapping(value = "/api/grid/{gridId}/units/", method = RequestMethod.PUT)
+    public Grid placeUnit(@PathVariable Long gridId, @RequestBody UnitRequest unitRequest) {
+        Grid grid = gridRepository.findOne(gridId);
+
+        Unit unit = GridManager.getUnit(grid, unitRequest.getId());
+        if (unit == null) {
+            throw new BadRequestException(/*"unit id invalid"*/);
+        }
+
+        unit.setX(unitRequest.getCol());
+        unit.setY(unitRequest.getRow());
+        gridRepository.save(grid);
+
+        return GridManager.populateGrid(grid);
     }
 
 //    /** Get all the purchasables that this grid has either available, or hinted at. */

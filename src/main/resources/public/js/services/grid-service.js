@@ -6,6 +6,12 @@ alchApp.factory('GridService', function($window, $location, $http, $log) {
                 'id': id
             }
         },
-
+        getUnitPlacementData: function(id, row, col) {
+            return {
+                'id': id,
+                'row': row,
+                'col': col,
+            }
+        }
     }
 });

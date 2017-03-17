@@ -1,0 +1,29 @@
+<!--
+{
+    "id":1,
+
+    "x":null,
+    "y":null,
+
+    "type":"Source",
+    "resourceOutputType":{"displayName":"Wood"},
+    "resourceInputType":null,
+
+    "costAmount":10,
+    "costResourceType":{"displayName":"Wood"},
+
+    "purchased":false,
+    "isPlaced":false
+}
+-->
+
+<div ng-click="handleClick(unit)">
+    <!-- image goes here instead -->
+    {{unit.type}}: [{{unit.resourceInputType.displayName}}-->{{unit.resourceOutputType.displayName}}]
+
+    <span ng-show="!unit.purchased">
+        Cost: {{unit.costAmount}} {{unit.costResourceType.displayName}}
+        afford:{{unit.canAfford}}
+        <!--<button class="btn btn-primary" ng-show="unit.canAfford" ng-click="">purchase</button>-->
+    </span>
+</div>

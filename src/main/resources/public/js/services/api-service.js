@@ -98,6 +98,10 @@ alchApp.factory('APIService', function($window, $location, $http, $log) {
         },
 
         purchaseUnit(gridId, unitId, data, successCallback) {
+            this.post('/api/grid/'+gridId+'/units/', data, successCallback);
+        },
+
+        placeUnit(gridId, unitId, data, successCallback) {
             this.put('/api/grid/'+gridId+'/units/', data, successCallback);
         },
 

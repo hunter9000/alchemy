@@ -15,7 +15,7 @@ public class GridManager {
             ResourceInventory inv = new ResourceInventory();
             inv.setGrid(grid);
             if (rType == ResourceType.WOOD) {
-                inv.setAmount(8);
+                inv.setAmount(80);
             }
             else {
                 inv.setAmount(0);
@@ -59,7 +59,7 @@ public class GridManager {
         return unit;
     }
 
-    public static void populateGrid(Grid grid) {
+    public static Grid populateGrid(Grid grid) {
         // populate the Cell array
         Cell[][] cells = new Cell[grid.getHeight()][grid.getWidth()];
         for (int i=0; i<grid.getHeight(); i++) {
@@ -112,6 +112,16 @@ public class GridManager {
 
         grid.setPurchasedUnits(purchased);
         grid.setPurchasableUnits(purchasable);
+
+        return grid;
     }
 
+    public static Unit getUnit(Grid grid, Long unitId) {
+        for (Unit unit : grid.getUnits()) {
+            if (unit.getId().equals(unitId)) {
+                return unit;
+            }
+        }
+        return null;
+    }
 }

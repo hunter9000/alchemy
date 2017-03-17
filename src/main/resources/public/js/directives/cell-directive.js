@@ -1,22 +1,34 @@
 
 alchApp.directive('cell', function() {
 	return {
-		template:
-			`<div style="display:inline-block; width:50px; height:50px; border: 1px solid black;" >
-			    <span ng-show="cell.unit">unit</span>
-			    <span ng-show="cell.pipe1">pipe1</span>
-			    <span ng-show="cell.pipe2">pipe2</span>
-                <span ng-show="!cell.unit && !cell.pipe1 && !cell.pipe2">empty</span>
-			</div>`,
+		templateUrl: 'pages/templates/cell-directive-template.html',
 		restrict: 'E',
 		scope: {
 			cell: '=',
+			x: '@',     // col
+			y: '@',     // row
+			emptyCellClick: '&',
+			unitClick: '&',
 		},
-//		controller: function firstDirectiveController($scope) {
-//            if ($scope.initialCollapsed == undefined) {
-//                $scope.initialCollapsed = false;
-//            }
-//            return $scope;
-//		}
-	}
+        controller:function($scope, $window, $http, $location) {
+            $scope.isCellEmpty = function() {
+                return !$scope.cell.unit && !$scope.cell.pipe1 && !$scope.cell.pipe2;
+            }
+
+            $scope.handleUnitClick = function() {
+                console.log('clicked unit inside cell ' + $scope.cell.unit.id);
+
+                $scope.unitClick()($scope.cell.unit, $scope.y, $scope.x);
+            }
+            $scope.pipeClick = function() {
+                // nothing yet
+            }
+            $scope.clickEmpty = function() {
+                console.log('cell directive clicked empty cell');
+                $scope.emptyCellClick()($scope.y, $scope.x);
+            }
+        },
+
+
+    }
 });

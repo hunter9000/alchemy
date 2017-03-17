@@ -19,9 +19,15 @@
 -->
 <div class="container">
     <div class="row">
+        <!-- CELL GRID -->
         <div class="col-md-6">
             <div ng-repeat="row in grid.cells">
-                <cell ng-repeat="cell in row" cell="cell"/>
+                <cell ng-repeat="cell in row"
+                      cell="cell"
+                      x="{{$index}}"
+                      y="{{$parent.$index}}"
+                      empty-cell-click="emptyCellClick"
+                      unit-click="unitClick"/>
             </div>
         </div>
 
@@ -29,10 +35,11 @@
     {"id":13,"x":null,"y":null,"type":"Transmuter","resourceOutputType":{"displayName":"Dirt"},"resourceInputType":{"displayName":"Wood"},"purchased":true,"costAmount":0,"costResourceType":{"displayName":"Wood"},"canAfford":false,"isPlaced":false}
     {"id":12,"x":null,"y":null,"type":"Stockpile","resourceOutputType":null,"resourceInputType":null,"purchased":true,"costAmount":0,"costResourceType":{"displayName":"Wood"},"canAfford":false,"isPlaced":false}
 -->
+        <!-- PLACAEABLE UNITS -->
         <div class="col-md-3">
-            <div ng-repeat="unit in grid.purchasedUnits">
-                {{unit.type}}: [{{unit.resourceInputType.displayName}}-->{{unit.resourceOutputType.displayName}}]
-            </div>
+            <!--{{selectedPlaceableUnit}}-->
+            <!--<hr/>-->
+            <unit ng-repeat="unit in grid.purchasedUnits | filter: {isPlaced: false}" unit="unit" click="placeUnit" />
         </div>
 
         <div class="col-md-3">
@@ -42,27 +49,10 @@
         </div>
     </div>
 
-    <!--
-    {
-        "id":1,
-        "x":null,
-        "y":null,
-        "type":"Source",
-        "resourceOutputType":{"displayName":"Wood"},
-        "resourceInputType":null,
-        "purchased":false,
-        "costAmount":10,
-        "costResourceType":{"displayName":"Wood"},
-        "isPlaced":false
-    }
-    -->
-
+    <!-- purchasable units -->
     <div class="row">
         <div ng-repeat="unit in grid.purchasableUnits">
-            {{unit.type}}: [{{unit.resourceInputType.displayName}}-->{{unit.resourceOutputType.displayName}}] Cost: {{unit.costAmount}} {{unit.costResourceType.displayName}}
-            afford:{{unit.canAfford}}
-            <button class="btn btn-primary" ng-show="unit.canAfford" ng-click="purchaseUnit(unit)">purchase</button>
-
+            <unit unit="unit" click="purchaseUnit"/>
         </div>
     </div>
 </div>
