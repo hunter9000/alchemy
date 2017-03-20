@@ -9,11 +9,13 @@ alchApp.directive('unit', function(APIService, GridService, $routeParams) {
 		},
         controller:function($scope, $window, $http, $location) {
             $scope.handleClick = function() {
-//                if (!$scope.unit.purchased) {
-//                    if ($scope.unit.canAfford) {
+                if (!$scope.unit.purchased) {
+                    if ($scope.unit.canAfford) {
 //                        $scope.click()($scope.unit);
-//                    }
-//                }
+                        // talk to the grid service, tell it to purchase
+                        GridService.purchaseUnit($routeParams.gridId, $scope.unit.id);
+                    }
+                }
 //                else {
 //                    $scope.click()($scope.unit);
 //                }
@@ -22,12 +24,7 @@ alchApp.directive('unit', function(APIService, GridService, $routeParams) {
             $scope.unplace = function() {
                 console.log('unplacing unit ' + $scope.unit.id);
 
-                APIService.placeUnit($routeParams.gridId,
-                                     $scope.unit.id,
-                                     GridService.getUnitPlacementData($scope.unit.id, null, null),
-                                     function(response) {
-//                                         $scope.grid = response.data;
-                                     });
+                GridService.unplaceUnit($routeParams.gridId, $scope.unit.id);
 
             }
         },
