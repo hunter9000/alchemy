@@ -1,5 +1,5 @@
 
-<div style="display:inline-block; width:50px; height:50px; border: 1px solid black;" ng-click="isCellEmpty() && clickEmpty()" >
+<div class="cell-wrapper" ng-click="isCellEmpty() && clickEmpty()">
     <!--row{{y}}-->
     <!--col{{x}}-->
 
@@ -9,5 +9,33 @@
     <span ng-show="cell.pipe1">pipe1</span>
     <span ng-show="cell.pipe2">pipe2</span>
 
-    <span ng-show="isCellEmpty()">empty</span>
+    <!-- drop target -->
+    <div class="cell-wrapper"
+         data-drop="true"
+         data-jqyoui-options
+         jqyoui-droppable="{'onDrop': 'drop()'}"
+         ng-model="cell.unit"
+         ng-show="isCellEmpty()">
+
+        <span>empty</span>
+    </div>
 </div>
+
+
+<!--<div class="thumbnail"-->
+     <!--data-drop="true"-->
+     <!--data-jqyoui-options-->
+     <!--ng-model="list2"-->
+     <!--jqyoui-droppable-->
+     <!--style='height:50px;'>-->
+
+    <!--<div class="btn btn-success"-->
+         <!--data-drag="false"-->
+         <!--data-jqyoui-options-->
+         <!--ng-model="list2"-->
+         <!--jqyoui-draggable-->
+         <!--ng-hide="!list2.title">-->
+
+        <!--{{list2.title}}-->
+    <!--</div>-->
+<!--</div>-->

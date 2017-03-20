@@ -17,7 +17,12 @@
 }
 -->
 
-<div ng-click="handleClick(unit)">
+<div class="cell-wrapper"
+     ng-click="handleClick(unit)"
+     data-drag="true"
+     data-jqyoui-options="{revert: 'invalid'}"
+     jqyoui-draggable="{animate:true}"
+     ng-model="unit">
     <!-- image goes here instead -->
     {{unit.type}}: [{{unit.resourceInputType.displayName}}-->{{unit.resourceOutputType.displayName}}]
 
@@ -26,4 +31,19 @@
         afford:{{unit.canAfford}}
         <!--<button class="btn btn-primary" ng-show="unit.canAfford" ng-click="">purchase</button>-->
     </span>
+
+    <div ng-show="unit.purchased && unit.isPlaced">
+        <span ng-click="unplace()">X</span>
+    </div>
 </div>
+<!-- delete button -->
+
+
+<!--<div class="btn btn-primary"-->
+     <!--data-drag="true"-->
+     <!--data-jqyoui-options="{revert: 'invalid'}"-->
+     <!--ng-model="list1"-->
+     <!--jqyoui-draggable="{animate:true}"-->
+     <!--ng-hide="!list1.title">-->
+    <!--{{list1.title}}-->
+<!--</div>-->

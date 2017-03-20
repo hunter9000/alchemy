@@ -26,8 +26,10 @@
                       cell="cell"
                       x="{{$index}}"
                       y="{{$parent.$index}}"
-                      empty-cell-click="emptyCellClick"
-                      unit-click="unitClick"/>
+                      />
+                <!--unit-dropped="unitDropped"-->
+                <!--empty-cell-click="emptyCellClick"-->
+                <!--unit-click="unitClick"-->
             </div>
         </div>
 
@@ -39,7 +41,8 @@
         <div class="col-md-3">
             <!--{{selectedPlaceableUnit}}-->
             <!--<hr/>-->
-            <unit ng-repeat="unit in grid.purchasedUnits | filter: {isPlaced: false}" unit="unit" click="placeUnit" />
+            <unit ng-repeat="unit in grid.purchasedUnits | filter: {isPlaced: false}" unit="unit"  />
+            <!--click="placeUnit"-->
         </div>
 
         <div class="col-md-3">
@@ -59,3 +62,35 @@
 
 
 <button clas="btn btn-secondary" ng-click="delete()">delete</button>
+
+<!--&lt;!&ndash; drag &ndash;&gt;-->
+<!--<div class="btn btn-primary"-->
+     <!--data-drag="true"-->
+     <!--data-jqyoui-options="{revert: 'invalid'}"-->
+     <!--ng-model="list1"-->
+     <!--jqyoui-draggable="{animate:true}"-->
+     <!--ng-hide="!list1.title">-->
+    <!--{{list1.title}}-->
+<!--</div>-->
+
+<!--{{list1}}-->
+
+
+<!--&lt;!&ndash; drop &ndash;&gt;-->
+<!--<div class="thumbnail"-->
+     <!--data-drop="true"-->
+     <!--data-jqyoui-options-->
+     <!--ng-model="list2"-->
+     <!--jqyoui-droppable-->
+     <!--style='height:50px;'>-->
+    <!--<div class="btn btn-success"-->
+         <!--data-drag="false"-->
+         <!--data-jqyoui-options-->
+         <!--ng-model="list2"-->
+         <!--jqyoui-draggable-->
+         <!--ng-hide="!list2.title">-->
+        <!--{{list2.title}}-->
+    <!--</div>-->
+<!--</div>-->
+
+<!--{{list2}}-->

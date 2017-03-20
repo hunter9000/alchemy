@@ -1,5 +1,5 @@
 // create the module and name it scotchApp
-var alchApp = angular.module('alchApp', ['ngRoute', 'ui.bootstrap', 'checklist-model', 'ngMaterial']);
+var alchApp = angular.module('alchApp', ['ngRoute', 'ui.bootstrap', 'checklist-model', 'ngMaterial', 'ngDragDrop']);
 
 // configure our routes
 alchApp.config(function($routeProvider) {
