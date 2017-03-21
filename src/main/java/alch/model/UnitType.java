@@ -1,5 +1,9 @@
 package alch.model;
 
 public enum UnitType {
-    Source, Splitter, Transmuter, Stockpile;
+    SOURCE,
+    SPLITTER,
+    TRANSMUTER,
+    DUAL_TRANSMUTER,
+    STOCKPILE;
 }

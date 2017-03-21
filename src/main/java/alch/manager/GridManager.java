@@ -2,10 +2,13 @@ package alch.manager;
 
 import alch.model.*;
 import alch.model.user.User;
+import com.sun.corba.se.impl.orbutil.graph.Graph;
 
 import java.util.*;
 
 public class GridManager {
+
+    private Grid grid;
 
     public static Grid createGrid(User owner) {
         Grid grid = new Grid();
@@ -26,17 +29,17 @@ public class GridManager {
 
         Set<Unit> units = new HashSet<>();
         // sources
-        units.add(createUnit(grid, UnitType.Source, null, ResourceType.WOOD, 10, ResourceType.WOOD));
-        units.add(createUnit(grid, UnitType.Source, null, ResourceType.DIRT, 10, ResourceType.WOOD));
-        units.add(createUnit(grid, UnitType.Source, null, ResourceType.GRASS, 10, ResourceType.WOOD));
-        units.add(createUnit(grid, UnitType.Source, null, ResourceType.ROCK, 10, ResourceType.WOOD));
-        units.add(createUnit(grid, UnitType.Source, null, ResourceType.WATER, 10, ResourceType.WOOD));
+        units.add(createUnit(grid, UnitType.SOURCE, null, ResourceType.WOOD, 10, ResourceType.WOOD));
+        units.add(createUnit(grid, UnitType.SOURCE, null, ResourceType.DIRT, 10, ResourceType.WOOD));
+        units.add(createUnit(grid, UnitType.SOURCE, null, ResourceType.GRASS, 10, ResourceType.WOOD));
+        units.add(createUnit(grid, UnitType.SOURCE, null, ResourceType.ROCK, 10, ResourceType.WOOD));
+        units.add(createUnit(grid, UnitType.SOURCE, null, ResourceType.WATER, 10, ResourceType.WOOD));
         // transmuters
-        units.add(createUnit(grid, UnitType.Transmuter, ResourceType.WOOD, ResourceType.DIRT, 0, ResourceType.WOOD));
+        units.add(createUnit(grid, UnitType.TRANSMUTER, ResourceType.WOOD, ResourceType.DIRT, 0, ResourceType.WOOD));
         // stockpiles
-        units.add(createUnit(grid, UnitType.Stockpile, null, null, 0, ResourceType.WOOD));
-        units.add(createUnit(grid, UnitType.Stockpile, null, null, 50, ResourceType.WOOD));
-        units.add(createUnit(grid, UnitType.Stockpile, null, null, 100, ResourceType.WOOD));
+        units.add(createUnit(grid, UnitType.STOCKPILE, null, null, 0, ResourceType.WOOD));
+        units.add(createUnit(grid, UnitType.STOCKPILE, null, null, 50, ResourceType.WOOD));
+        units.add(createUnit(grid, UnitType.STOCKPILE, null, null, 100, ResourceType.WOOD));
 
         grid.setUnits(units);
 
@@ -59,7 +62,7 @@ public class GridManager {
         return unit;
     }
 
-    public static Grid populateGrid(Grid grid) {
+    public void populateGrid() {
         // populate the Cell array
         Cell[][] cells = new Cell[grid.getHeight()][grid.getWidth()];
         for (int i=0; i<grid.getHeight(); i++) {
@@ -113,10 +116,10 @@ public class GridManager {
         grid.setPurchasedUnits(purchased);
         grid.setPurchasableUnits(purchasable);
 
-        return grid;
+//        return grid;
     }
 
-    public static Unit getUnit(Grid grid, Long unitId) {
+    public Unit getUnit(Long unitId) {
         for (Unit unit : grid.getUnits()) {
             if (unit.getId().equals(unitId)) {
                 return unit;
@@ -124,4 +127,121 @@ public class GridManager {
         }
         return null;
     }
+
+    public List<ProductionPath> getPaths() {
+        Set<Unit> allVisitedUnits = new HashSet<>();
+
+        // for each SOURCE in units
+        for (Unit source : grid.getUnits()) {
+            if (source.getType() == UnitType.SOURCE && !allVisitedUnits.contains(source)) {   // if it's not in allVisitedUnits
+                // create Set<Unit> for this graph
+                Set<Unit> graphVisitedUnits = new HashSet<>();
+                // add this source to the set
+                graphVisitedUnits.add(source);
+
+                ProductionPath path = new ProductionPath();
+                visitNextUnit(source, source.getConnections().get(0).getDirectionType(), path, graphVisitedUnits);
+
+                // do something useful with path here
+
+                allVisitedUnits.addAll(graphVisitedUnits);
+            }
+
+        }
+
+
+        return null;
+    }
+
+
+    private ProductionPath visitNextUnit(Unit currUnit, DirectionType entryDir, ProductionPath path, Set<Unit> graphVisitedUnits) {
+        // for each output
+        for (UnitConnection connection : currUnit.getConnections()) {
+            if (connection.getDirectionType().opposite() == entryDir) {
+                continue;       // don't go back the way we came
+            }
+
+            CellConnectionInfo neighborCellInfo = getConnectedNeighborCell(currUnit.getY(), currUnit.getX(), connection.getDirectionType());
+            if (neighborCellInfo == null) {
+                throw new RuntimeException("no connected neighbor found");
+            }
+
+
+            // neighborCell should be a unit now
+            Cell neighborCell = neighborCellInfo.cell;
+            if (neighborCell.isUnit()) {
+                Unit u = neighborCell.unit;
+                // add the unit to graphVisitedUnits
+                graphVisitedUnits.add(u);
+
+                // check that the connection is valid
+                    // does the output of currUnit from the entryDir match the input of the u unit at neighborCellInfo.entryDir?
+
+                // if valid,
+                    // add this unit to the path
+
+                // recurse
+                return visitNextUnit(u, neighborCellInfo.entryDirection, path, graphVisitedUnits);
+            }
+        }
+
+        return null;
+
+        // add graphVisitedUnits to allVisitedUnits
+
+    }
+
+    private class CellConnectionInfo {
+        Cell cell;
+        DirectionType entryDirection;
+
+    }
+
+    private CellConnectionInfo getConnectedNeighborCell(Integer row, Integer col, DirectionType entryDir) {
+        if (entryDir == DirectionType.E) {
+            col++;
+        }
+        if (entryDir == DirectionType.N) {
+            row++;
+        }
+        if (entryDir == DirectionType.S) {
+            row--;
+        }
+        if (entryDir == DirectionType.W) {
+            col--;
+        }
+        if (!isInBounds(row, col)) {
+            return null;
+        }
+
+        Cell neighborCell = grid.getCells()[row][col];
+        if (neighborCell.isUnit()) {
+            CellConnectionInfo ret = new CellConnectionInfo();
+            ret.cell = neighborCell;
+            ret.entryDirection = entryDir;
+            return ret;
+        }
+        else if (neighborCell.isPipe()) {
+            DirectionType leavingDirection = null;
+            if (neighborCell.pipe1 != null && neighborCell.pipe1.outputDirectionFromInputDirection(entryDir) != null) {
+                leavingDirection = neighborCell.pipe1.outputDirectionFromInputDirection(entryDir);
+            }
+            else if (neighborCell.pipe2 != null && neighborCell.pipe2.outputDirectionFromInputDirection(entryDir) != null) {
+                leavingDirection = neighborCell.pipe2.outputDirectionFromInputDirection(entryDir);
+            }
+//                neighborCell = getConnectedNeighborCell(neighborCell.pipe, );
+            if (leavingDirection == null) {
+                return null;
+            }
+            return getConnectedNeighborCell(row, col, leavingDirection);
+        }
+        else {
+            return null;
+        }
+    }
+
+    private boolean isInBounds(Integer row, Integer col) {
+        return row >= 0 && col >= 0 && row < grid.getHeight() && col < grid.getWidth();
+    }
+
 }

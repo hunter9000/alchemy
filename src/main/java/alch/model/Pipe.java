@@ -1,5 +1,6 @@
 package alch.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -39,6 +40,19 @@ public class Pipe {
     public boolean isPlaced() {
         return this.x != null && this.y != null;
     }
+
+    @Transient
+    @JsonIgnore
+    public DirectionType outputDirectionFromInputDirection(DirectionType incomingDirection) {
+        if (inDirection.opposite() == incomingDirection) {
+            return outDirection;
+        }
+        else if (outDirection.opposite() == incomingDirection) {
+            return inDirection;
+        }
+        return null;
+    }
+
 
     public Long getId() {
         return id;

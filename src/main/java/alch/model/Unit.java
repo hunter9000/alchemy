@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "unit")
@@ -29,13 +30,24 @@ public class Unit {
     @Enumerated(EnumType.STRING)
     private UnitType type;
 
-    @Column(name = "output_type", updatable = false)
-    @Enumerated(EnumType.STRING)
-    private ResourceType resourceOutputType;  // optional, for if this is a source or transmuter
+//    @Column(name = "output_type", updatable = false)
+//    @Enumerated(EnumType.STRING)
+//    private ResourceType resourceOutputType;  // optional, for if this is a source or transmuter
+//
+//    @Column(name = "input_type", updatable = false)
+//    @Enumerated(EnumType.STRING)
+//    private ResourceType resourceInputType;  // optional, for if this is a transmuter
 
-    @Column(name = "input_type", updatable = false)
-    @Enumerated(EnumType.STRING)
-    private ResourceType resourceInputType;  // optional, for if this is a transmuter
+    @OneToMany(mappedBy = "unit")
+    List<UnitConnection> connections;
+
+    public List<UnitConnection> getConnections() {
+        return connections;
+    }
+
+    public void setConnections(List<UnitConnection> connections) {
+        this.connections = connections;
+    }
 
     @Column(name = "purchased", nullable = false)
     private Boolean purchased = false;
@@ -64,6 +76,7 @@ public class Unit {
     public void setCanAfford(boolean canAfford) {
         this.canAfford = canAfford;
     }
+
 
     public Long getId() {
         return id;
@@ -100,19 +113,19 @@ public class Unit {
         this.grid = grid;
     }
 
-    public ResourceType getResourceOutputType() {
-        return resourceOutputType;
-    }
-    public void setResourceOutputType(ResourceType resourceOutputType) {
-        this.resourceOutputType = resourceOutputType;
-    }
-
-    public ResourceType getResourceInputType() {
-        return resourceInputType;
-    }
-    public void setResourceInputType(ResourceType resourceInputType) {
-        this.resourceInputType = resourceInputType;
-    }
+//    public ResourceType getResourceOutputType() {
+//        return resourceOutputType;
+//    }
+//    public void setResourceOutputType(ResourceType resourceOutputType) {
+//        this.resourceOutputType = resourceOutputType;
+//    }
+//
+//    public ResourceType getResourceInputType() {
+//        return resourceInputType;
+//    }
+//    public void setResourceInputType(ResourceType resourceInputType) {
+//        this.resourceInputType = resourceInputType;
+//    }
 
     public Boolean getPurchased() {
         return purchased;
