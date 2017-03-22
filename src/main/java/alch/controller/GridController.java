@@ -86,8 +86,8 @@ public class GridController {
             throw new BadRequestException(/*"unit id invalid"*/);
         }
 
-        unit.setX(unitRequest.getCol());
-        unit.setY(unitRequest.getRow());
+        unit.setCol(unitRequest.getCol());
+        unit.setRow(unitRequest.getRow());
         gridRepository.save(grid);
 
         return GridManager.populateGrid(grid);

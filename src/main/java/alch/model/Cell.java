@@ -2,6 +2,9 @@ package alch.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Cell {
     public Unit unit;
     public Pipe pipe1;
@@ -16,4 +19,7 @@ public class Cell {
         return unit != null;
     }
 
+    public List<Pipe> getAllPipes() {
+        return Arrays.asList(pipe1, pipe2);
+    }
 }

@@ -1,7 +1,12 @@
 package alch.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
+@Entity
+@Table(name = "unit_connection")
+@JsonIgnoreProperties(value = {"unit"})
 public class UnitConnection {
 
     @Id
@@ -21,7 +26,15 @@ public class UnitConnection {
     @Enumerated(EnumType.STRING)
     private DirectionType directionType;
 
+    @Column(name = "is_input", nullable = false, updatable = false)
     private Boolean isInput;  // isOutput?
+
+    public UnitConnection() {}
+    public UnitConnection(ResourceType resourceType, DirectionType directionType, boolean isInput) {
+        this.resourceType = resourceType;
+        this.directionType = directionType;
+        this.isInput = isInput;
+    }
 
     public Long getId() {
         return id;

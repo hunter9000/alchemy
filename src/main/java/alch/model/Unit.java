@@ -1,9 +1,12 @@
 package alch.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.collections4.CollectionUtils;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -20,11 +23,11 @@ public class Unit {
     @JoinColumn(name = "grid", nullable = false, updatable = false)
     private Grid grid;
 
-    @Column(name = "x_pos")
-    private Integer x;
+    @Column(name = "col")
+    private Integer col;
 
-    @Column(name = "y_pos")
-    private Integer y;
+    @Column(name = "row")
+    private Integer row;
 
     @Column(name = "type", nullable = false, updatable = false)
     @Enumerated(EnumType.STRING)
@@ -41,14 +44,6 @@ public class Unit {
     @OneToMany(mappedBy = "unit")
     List<UnitConnection> connections;
 
-    public List<UnitConnection> getConnections() {
-        return connections;
-    }
-
-    public void setConnections(List<UnitConnection> connections) {
-        this.connections = connections;
-    }
-
     @Column(name = "purchased", nullable = false)
     private Boolean purchased = false;
 
@@ -64,7 +59,7 @@ public class Unit {
     @Transient
     @JsonProperty(value = "isPlaced")
     public boolean isPlaced() {
-        return this.x != null && this.y != null;
+        return this.col != null && this.row != null;
     }
 
     @Transient
@@ -77,6 +72,11 @@ public class Unit {
         this.canAfford = canAfford;
     }
 
+    @Transient
+    @JsonIgnore
+    public Collection<UnitConnection> getOutputConnections() {
+        return CollectionUtils.select(getConnections(), (UnitConnection unitConnection) ->  !unitConnection.getInput() );
+    }
 
     public Long getId() {
         return id;
@@ -85,18 +85,18 @@ public class Unit {
         this.id = id;
     }
 
-    public Integer getX() {
-        return x;
+    public Integer getCol() {
+        return col;
     }
-    public void setX(Integer x) {
-        this.x = x;
+    public void setCol(Integer col) {
+        this.col = col;
     }
 
-    public Integer getY() {
-        return y;
+    public Integer getRow() {
+        return row;
     }
-    public void setY(Integer y) {
-        this.y = y;
+    public void setRow(Integer row) {
+        this.row = row;
     }
 
     public UnitType getType() {
@@ -127,6 +127,14 @@ public class Unit {
 //        this.resourceInputType = resourceInputType;
 //    }
 
+
+    public List<UnitConnection> getConnections() {
+        return connections;
+    }
+    public void setConnections(List<UnitConnection> connections) {
+        this.connections = connections;
+    }
+
     public Boolean getPurchased() {
         return purchased;
     }
@@ -147,4 +155,6 @@ public class Unit {
     public void setCostResourceType(ResourceType costResourceType) {
         this.costResourceType = costResourceType;
     }
+
+
 }

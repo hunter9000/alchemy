@@ -20,11 +20,11 @@ public class Pipe {
     @JoinColumn(name = "grid", nullable = false, updatable = false)
     private Grid grid;
 
-    @Column(name = "x_pos")
-    private Integer x;
+    @Column(name = "col")
+    private Integer col;
 
-    @Column(name = "y_pos")
-    private Integer y;
+    @Column(name = "row")
+    private Integer row;
 
     @Column(name = "in_direction")
     @Enumerated(EnumType.STRING)
@@ -38,7 +38,7 @@ public class Pipe {
     @Transient
     @JsonProperty(value = "isPlaced")
     public boolean isPlaced() {
-        return this.x != null && this.y != null;
+        return this.col != null && this.row != null;
     }
 
     @Transient
@@ -68,18 +68,18 @@ public class Pipe {
         this.grid = grid;
     }
 
-    public Integer getX() {
-        return x;
+    public Integer getCol() {
+        return col;
     }
-    public void setX(Integer x) {
-        this.x = x;
+    public void setCol(Integer col) {
+        this.col = col;
     }
 
-    public Integer getY() {
-        return y;
+    public Integer getRow() {
+        return row;
     }
-    public void setY(Integer y) {
-        this.y = y;
+    public void setRow(Integer row) {
+        this.row = row;
     }
 
     public DirectionType getInDirection() {

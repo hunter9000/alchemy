@@ -24,8 +24,8 @@
             <div ng-repeat="row in grid.cells">
                 <cell ng-repeat="cell in row"
                       cell="cell"
-                      x="{{$index}}"
-                      y="{{$parent.$index}}"
+                      col="{{$index}}"
+                      row="{{$parent.$index}}"
                       />
                 <!--unit-dropped="unitDropped"-->
                 <!--empty-cell-click="emptyCellClick"-->
@@ -34,8 +34,8 @@
         </div>
 
 <!--
-    {"id":13,"x":null,"y":null,"type":"TRANSMUTER","resourceOutputType":{"displayName":"Dirt"},"resourceInputType":{"displayName":"Wood"},"purchased":true,"costAmount":0,"costResourceType":{"displayName":"Wood"},"canAfford":false,"isPlaced":false}
-    {"id":12,"x":null,"y":null,"type":"STOCKPILE","resourceOutputType":null,"resourceInputType":null,"purchased":true,"costAmount":0,"costResourceType":{"displayName":"Wood"},"canAfford":false,"isPlaced":false}
+    {"id":13,"col":null,"row":null,"type":"TRANSMUTER","resourceOutputType":{"displayName":"Dirt"},"resourceInputType":{"displayName":"Wood"},"purchased":true,"costAmount":0,"costResourceType":{"displayName":"Wood"},"canAfford":false,"isPlaced":false}
+    {"id":12,"col":null,"row":null,"type":"STOCKPILE","resourceOutputType":null,"resourceInputType":null,"purchased":true,"costAmount":0,"costResourceType":{"displayName":"Wood"},"canAfford":false,"isPlaced":false}
 -->
         <!-- PLACAEABLE UNITS -->
         <div class="col-md-3">

@@ -5,8 +5,8 @@ alchApp.directive('cell', function(APIService, GridService, $routeParams) {
 		restrict: 'E',
 		scope: {
 			cell: '=',
-			x: '@',     // col
-			y: '@',     // row
+			col: '@',     // col (x)
+			row: '@',     // row (y)
 		},
         controller:function($scope, $window, $http, $location) {
             $scope.isCellEmpty = function() {
@@ -27,7 +27,7 @@ alchApp.directive('cell', function(APIService, GridService, $routeParams) {
                 console.log('dropped unit id: ' + $scope.cell.unit.id);
                 console.log('isempty: ' + $scope.isCellEmpty());
 
-                GridService.placeUnit($routeParams.gridId, $scope.cell.unit.id, $scope.y, $scope.x;
+                GridService.placeUnit($routeParams.gridId, $scope.cell.unit.id, $scope.row, $scope.col;
             }
 
 //            $scope.deleteUnit = function() {
