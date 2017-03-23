@@ -1,6 +1,7 @@
 package alch.manager;
 
 import alch.model.*;
+import alch.model.user.UnitDefinitionType;
 import alch.model.user.User;
 
 import java.util.*;
@@ -32,18 +33,18 @@ public class GridManager {
 
         Set<Unit> units = new HashSet<>();
         // sources
-        units.add(createUnit(grid, UnitType.SOURCE, 10, ResourceType.WOOD, new UnitConnection(ResourceType.WOOD, DirectionType.E, false) ));
-        units.add(createUnit(grid, UnitType.SOURCE, 10, ResourceType.WOOD, new UnitConnection(ResourceType.DIRT, DirectionType.E, false) ));
-        units.add(createUnit(grid, UnitType.SOURCE, 10, ResourceType.WOOD,  new UnitConnection(ResourceType.GRASS, DirectionType.E, false) ));
-        units.add(createUnit(grid, UnitType.SOURCE, 10, ResourceType.WOOD,  new UnitConnection(ResourceType.ROCK, DirectionType.E, false) ));
-        units.add(createUnit(grid, UnitType.SOURCE, 10, ResourceType.WOOD,  new UnitConnection(ResourceType.WATER, DirectionType.E, false) ));
+        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_WOOD, 10, ResourceType.WOOD, new UnitConnection(ResourceType.WOOD, DirectionType.E, false) ));
+        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_DIRT,10, ResourceType.WOOD, new UnitConnection(ResourceType.DIRT, DirectionType.E, false) ));
+        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_GRASS,10, ResourceType.WOOD,  new UnitConnection(ResourceType.GRASS, DirectionType.E, false) ));
+        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_ROCK,10, ResourceType.WOOD,  new UnitConnection(ResourceType.ROCK, DirectionType.E, false) ));
+        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_WATER,10, ResourceType.WOOD,  new UnitConnection(ResourceType.WATER, DirectionType.E, false) ));
         // transmuters
-        units.add(createUnit(grid, UnitType.TRANSMUTER, 0, ResourceType.WOOD, new UnitConnection(ResourceType.WOOD, DirectionType.W, true),
-                                                                                            new UnitConnection(ResourceType.DIRT, DirectionType.E, false)));
+        units.add(createUnit(grid, UnitType.TRANSMUTER, UnitDefinitionType.TRANSMUTER_WOOD_DIRT,0, ResourceType.WOOD, new UnitConnection(ResourceType.WOOD, DirectionType.W, true),
+                                                                                                                                  new UnitConnection(ResourceType.DIRT, DirectionType.E, false)));
         // stockpiles
-        units.add(createUnit(grid, UnitType.STOCKPILE, 0, ResourceType.WOOD, new UnitConnection(ResourceType.WOOD, DirectionType.N, true)));
-        units.add(createUnit(grid, UnitType.STOCKPILE, 50, ResourceType.WOOD, new UnitConnection(ResourceType.DIRT, DirectionType.N, true)));
-        units.add(createUnit(grid, UnitType.STOCKPILE, 100, ResourceType.WOOD, new UnitConnection(ResourceType.GRASS, DirectionType.N, true)));
+        units.add(createUnit(grid, UnitType.STOCKPILE, UnitDefinitionType.STOCKPILE_WOOD,0, ResourceType.WOOD, new UnitConnection(ResourceType.WOOD, DirectionType.N, true)));
+        units.add(createUnit(grid, UnitType.STOCKPILE, UnitDefinitionType.STOCKPILE_DIRT,50, ResourceType.WOOD, new UnitConnection(ResourceType.DIRT, DirectionType.N, true)));
+        units.add(createUnit(grid, UnitType.STOCKPILE, UnitDefinitionType.STOCKPILE_GRASS,100, ResourceType.WOOD, new UnitConnection(ResourceType.GRASS, DirectionType.N, true)));
 
         grid.setUnits(units);
 
@@ -55,10 +56,11 @@ public class GridManager {
         return grid;
     }
 
-    public static Unit createUnit(Grid grid, UnitType unitType, Integer costAmount, ResourceType costResourceType, UnitConnection... unitConnections) {
+    public static Unit createUnit(Grid grid, UnitType unitType, UnitDefinitionType unitDefinitionType, Integer costAmount, ResourceType costResourceType, UnitConnection... unitConnections) {
         Unit unit = new Unit();
         unit.setGrid(grid);
         unit.setType(unitType);
+        unit.setDefinitionType(unitDefinitionType);
         unit.setCostAmount(costAmount);
         unit.setCostResourceType(costResourceType);
 //        unit.setResourceInputType(resourceInputType);

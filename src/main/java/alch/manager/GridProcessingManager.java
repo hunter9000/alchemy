@@ -7,13 +7,15 @@ import java.util.*;
 public class GridProcessingManager {
 
     private Grid grid;
+    private List<ProductionPath> paths;
 
     private List<Cell> errorCells;
     private Map<Unit, ProductionPath> unitPathMembership;
 
-
     public GridProcessingManager(Grid grid) {
         this.grid = grid;
+        this.paths = new ArrayList<>();
+
         this.errorCells = new ArrayList<>();
         this.unitPathMembership = new HashMap<>();
     }
@@ -32,10 +34,12 @@ public class GridProcessingManager {
                 graphVisitedUnits.add(source);
 
                 ProductionPath path = new ProductionPath();
+                path.addSource(source);
                 // we know there's only one connection, and it's an output
                 visitNextUnit(source, null, path, graphVisitedUnits);
 
                 // do something useful with path here
+                paths.add(path);
 
                 allVisitedUnits.addAll(graphVisitedUnits);
             }
@@ -69,33 +73,44 @@ public class GridProcessingManager {
             // neighborCell should be a unit now
 //            Cell neighborCell = neighborUnitInfo.cell;
 //            if (neighborCell.isUnit()) {
-                Unit nextUnit = neighborUnitInfo.unit;
-                UnitConnection inputConnection = neighborUnitInfo.getInputUnitConnection();      // this is the outputConnection that
+            Unit nextUnit = neighborUnitInfo.unit;
+            UnitConnection inputConnection = neighborUnitInfo.getInputUnitConnection();      // this is the outputConnection that
 
-                // check that the outputConnection is valid
-                // does the output of currUnit from the entryDir match the input of the u unit at neighborUnitInfo.entryDir?
-                if (outputConnection.getResourceType() != inputConnection.getResourceType()) {
-                    // add to error list and return null;
-                    return null;
+            // check that the outputConnection is valid
+            // does the output of currUnit from the entryDir match the input of the u unit at neighborUnitInfo.entryDir?
+            if (outputConnection.getResourceType() != inputConnection.getResourceType()) {
+                // add to error list and return null;
+                return null;
+            }
+
+            // if valid,
+            // check if this unit is already part of another path, if so, join this path with that one and go back
+            ProductionPath membershipPath = unitPathMembership.get(nextUnit);
+            if (membershipPath == null) {
+                // if not part of another path, add this unit to visited units, and add it to the path
+                unitPathMembership.put(nextUnit, path);
+                // add the unit to graphVisitedUnits
+                graphVisitedUnits.add(nextUnit);
+
+                path.linkUnit(currUnit, nextUnit);
+
+                // recurse
+                return visitNextUnit(nextUnit, neighborUnitInfo.entryDirection, path, graphVisitedUnits);
+            }
+            else if (membershipPath != path) {
+                // this belongs to another path already, need to join them
+                // add the existing path to the current path, and get rid of the existing one
+                path.addPath(membershipPath);
+                // readd all the nodes to the unitPathMembership map so they all point to the new map
+                for (Unit u : path.getAllUnits()) {
+                    unitPathMembership.put(u, path);
                 }
-
-                // if valid,
-                    // check if this unit is already part of another path, if so, join this path with that one and go back
-                    ProductionPath membershipPath = unitPathMembership.get(nextUnit);
-                    if (membershipPath != path) {
-                        // this belongs to another path already, need to join them
-                    }
-                    // if not part of another path, add this unit to visited units, and add it to the path
-                    else {
-                        unitPathMembership.put(nextUnit, path);
-                        // add the unit to graphVisitedUnits
-                        graphVisitedUnits.add(nextUnit);
-
-                        path.add(nextUnit);
-
-                        // recurse
-                        return visitNextUnit(nextUnit, neighborUnitInfo.entryDirection, path, graphVisitedUnits);
-                    }
+                // remove the old path from the list of paths
+                paths.remove(membershipPath);
+            }
+            else if (membershipPath == path) {
+                // this is a cycle, not allowed, add error
+            }
         }
 
         return null;

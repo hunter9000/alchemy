@@ -1,5 +1,6 @@
 package alch.model;
 
+import alch.model.user.UnitDefinitionType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -32,6 +33,10 @@ public class Unit {
     @Column(name = "type", nullable = false, updatable = false)
     @Enumerated(EnumType.STRING)
     private UnitType type;
+
+    @Column(name = "definition_type", nullable = false, updatable = false)
+    @Enumerated(EnumType.STRING)
+    private UnitDefinitionType definitionType;
 
 //    @Column(name = "output_type", updatable = false)
 //    @Enumerated(EnumType.STRING)
@@ -106,6 +111,13 @@ public class Unit {
         this.type = type;
     }
 
+    public UnitDefinitionType getDefinitionType() {
+        return definitionType;
+    }
+    public void setDefinitionType(UnitDefinitionType definitionType) {
+        this.definitionType = definitionType;
+    }
+
     public Grid getGrid() {
         return grid;
     }
@@ -155,6 +167,5 @@ public class Unit {
     public void setCostResourceType(ResourceType costResourceType) {
         this.costResourceType = costResourceType;
     }
-
 
 }

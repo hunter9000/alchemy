@@ -39,7 +39,7 @@ public class GridController {
     @RequestMapping(value = "/api/grid/{gridId}/", method = RequestMethod.GET)
     public Grid getGrid(@PathVariable Long gridId) {
         Grid grid = gridRepository.findOne(gridId);
-        GridManager.populateGrid(grid);
+        new GridManager(grid).populateGrid();
         return grid;
     }
 
@@ -63,7 +63,7 @@ public class GridController {
 //        for (Unit unit : grid.getUnits()) {
 //            if (unit.getId().equals(unitRequest.getId())) {
 
-        Unit unit = GridManager.getUnit(grid, unitRequest.getId());
+        Unit unit = new GridManager(grid).getUnit(unitRequest.getId());
         if (unit == null) {
             throw new BadRequestException(/*"unit id invalid"*/);
         }
@@ -81,7 +81,7 @@ public class GridController {
     public Grid placeUnit(@PathVariable Long gridId, @RequestBody UnitRequest unitRequest) {
         Grid grid = gridRepository.findOne(gridId);
 
-        Unit unit = GridManager.getUnit(grid, unitRequest.getId());
+        Unit unit = new GridManager(grid).getUnit(unitRequest.getId());
         if (unit == null) {
             throw new BadRequestException(/*"unit id invalid"*/);
         }
@@ -90,7 +90,8 @@ public class GridController {
         unit.setRow(unitRequest.getRow());
         gridRepository.save(grid);
 
-        return GridManager.populateGrid(grid);
+        new GridManager(grid).populateGrid();
+        return grid;
     }
 
 //    /** Get all the purchasables that this grid has either available, or hinted at. */
