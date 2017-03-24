@@ -23,6 +23,12 @@ public class Graph<T> {
 
 
     public boolean contains(T firstUnit) {
+//        for (Node<T> node : nodes) {
+//            if (node.getPayload().equals(firstUnit)) {
+//                return true;
+//            }
+//        }
+//        return false;
         return nodes.contains(new Node(firstUnit));
     }
 

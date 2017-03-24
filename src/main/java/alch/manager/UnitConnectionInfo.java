@@ -11,7 +11,7 @@ class UnitConnectionInfo {
 
     public UnitConnection getInputUnitConnection() {
         for (UnitConnection unitConnection : unit.getConnections()) {
-            if (unitConnection.getInput() && unitConnection.getDirectionType() == entryDirection) {
+            if (unitConnection.getInput() && unitConnection.getDirectionType().opposite() == entryDirection) {
                 return unitConnection;
             }
         }

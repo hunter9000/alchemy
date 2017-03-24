@@ -26,12 +26,12 @@ public class GridProcessingManager {
         Set<Unit> allVisitedUnits = new HashSet<>();
 
         // for each SOURCE in units
-        for (Unit source : grid.getUnits()) {
+        for (Unit source : grid.getPlacedUnits()) {
             if (source.getType() == UnitType.SOURCE && !allVisitedUnits.contains(source)) {   // if it's not in allVisitedUnits
                 // create Set<Unit> for this graph
                 Set<Unit> graphVisitedUnits = new HashSet<>();
                 // add this source to the set
-                graphVisitedUnits.add(source);
+//                graphVisitedUnits.add(source);
 
                 ProductionPath path = new ProductionPath();
                 path.addSource(source);
@@ -43,18 +43,22 @@ public class GridProcessingManager {
 
                 allVisitedUnits.addAll(graphVisitedUnits);
             }
-
         }
 
+        // all sources have been processed
+        // make sure that all units have been visited
+        // make sure that all transmuters have all their inputs supplied
 
-        return null;
+        return paths;
     }
 
     /** Takes the next unit to process, and the direction it was entered from, if any. Adds it to the path and graphVisitedUnits if it's properly connected. */
     private ProductionPath visitNextUnit(Unit currUnit, DirectionType entryDir, ProductionPath path, Set<Unit> graphVisitedUnits) {
         if (graphVisitedUnits.contains(currUnit)) {
+            // error, this contains a cycle
             return path;
         }
+        graphVisitedUnits.add(currUnit);
 
         // for each output
         for (UnitConnection outputConnection : currUnit.getOutputConnections()) {
@@ -90,7 +94,7 @@ public class GridProcessingManager {
                 // if not part of another path, add this unit to visited units, and add it to the path
                 unitPathMembership.put(nextUnit, path);
                 // add the unit to graphVisitedUnits
-                graphVisitedUnits.add(nextUnit);
+//                graphVisitedUnits.add(nextUnit);
 
                 path.linkUnit(currUnit, nextUnit);
 
@@ -124,10 +128,10 @@ public class GridProcessingManager {
             col++;
         }
         if (entryDir == DirectionType.N) {
-            row++;
+            row--;
         }
         if (entryDir == DirectionType.S) {
-            row--;
+            row++;
         }
         if (entryDir == DirectionType.W) {
             col--;

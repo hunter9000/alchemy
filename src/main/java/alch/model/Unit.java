@@ -9,6 +9,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "unit")
@@ -168,4 +169,23 @@ public class Unit {
         this.costResourceType = costResourceType;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Unit)) {
+            return false;
+        }
+        Unit other = (Unit)obj;
+//        if (Objects.equals(this.id, other.id)) {
+//            return true;
+//        }
+        return Objects.equals(this.col, other.col)
+                && Objects.equals(this.row, other.row)
+                && Objects.equals(this.type, other.type)
+                && Objects.equals(this.definitionType, other.definitionType);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

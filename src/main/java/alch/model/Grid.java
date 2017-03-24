@@ -1,10 +1,12 @@
 package alch.model;
 
 import alch.model.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -53,6 +55,12 @@ public class Grid {
 
     @Transient
     private Cell[][] cells;
+
+    @Transient
+    @JsonIgnore
+    public Collection<Unit> getPlacedUnits() {
+        return org.apache.commons.collections4.CollectionUtils.select(units, unit -> { return unit.isPlaced(); });
+    }
 
     // entity bucket for purchased, but unused ones?	// no, just clear the x,y
 

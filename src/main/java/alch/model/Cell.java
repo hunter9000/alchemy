@@ -12,7 +12,7 @@ public class Cell {
 
     @JsonIgnore
     public boolean isPipe() {
-        return pipe1 != null && pipe2 != null;
+        return pipe1 != null || pipe2 != null;
     }
     @JsonIgnore
     public boolean isUnit() {

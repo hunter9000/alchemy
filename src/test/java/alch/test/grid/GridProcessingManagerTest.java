@@ -13,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -67,6 +68,13 @@ public class GridProcessingManagerTest {
         transmuterStockpilePipe.setCol(3);
         transmuterStockpilePipe.setInDirection(DirectionType.W);
         transmuterStockpilePipe.setOutDirection(DirectionType.S);
+
+        List<Pipe> pipes = new ArrayList<>();
+        pipes.add(sourceTransmuterPipe);
+        pipes.add(transmuterStockpilePipe);
+        grid.setPipes(pipes);
+
+        new GridManager(grid).populateGrid();
     }
 
     @Test
@@ -75,6 +83,6 @@ public class GridProcessingManagerTest {
 
         List<ProductionPath> paths = manager.getPaths();
 
-
+        Assert.assertNotNull(paths);
     }
 }
