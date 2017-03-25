@@ -27,6 +27,7 @@ alchApp.directive('unit', function(APIService, GridService, $routeParams) {
                 GridService.unplaceUnit($routeParams.gridId, $scope.unit.id);
 
             }
+            $scope.image = '/images/wood.png'
         },
     }
 });

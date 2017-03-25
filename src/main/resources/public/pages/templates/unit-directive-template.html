@@ -17,7 +17,7 @@
 }
 -->
 
-<div class="cell-wrapper"
+<div class="cell-wrapper cell"
      ng-click="handleClick(unit)"
      data-drag="true"
      data-jqyoui-options="{revert: 'invalid'}"
@@ -25,7 +25,8 @@
      ng-model="unit">
 
     <!-- image goes here instead -->
-    {{unit.type}}: [{{unit.resourceInputType.displayName}}-->{{unit.resourceOutputType.displayName}}]
+    <img src="{{image}}" style="position: absolute;" />
+    <!--{{unit.type}}: [{{unit.resourceInputType.displayName}}&ndash;&gt;{{unit.resourceOutputType.displayName}}]-->
 
     <span ng-show="!unit.purchased">
         Cost: {{unit.costAmount}} {{unit.costResourceType.displayName}}

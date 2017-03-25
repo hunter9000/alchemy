@@ -67,6 +67,16 @@ div#main {
     font-size: 8px;
 }
 
+.cell {
+    display:inline-block;
+    width:64px;
+    height:64px;
+}
+
+.bordered {
+    border: 1px solid black;
+}
+
 .cell-wrapper {
     display:inline-block;
     width:50px;
