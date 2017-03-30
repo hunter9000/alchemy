@@ -21,7 +21,7 @@
     <div class="row">
         <!-- CELL GRID -->
         <div class="col-md-6">
-            <div ng-repeat="row in grid.cells">
+            <div ng-repeat="row in grid.cells" >
                 <cell ng-repeat="cell in row"
                       cell="cell"
                       col="{{$index}}"
@@ -38,10 +38,15 @@
     {"id":12,"col":null,"row":null,"type":"STOCKPILE","resourceOutputType":null,"resourceInputType":null,"purchased":true,"costAmount":0,"costResourceType":{"displayName":"Wood"},"canAfford":false,"isPlaced":false}
 -->
         <!-- PLACAEABLE UNITS -->
-        <div class="col-md-3">
+        <div class="col-md-3" style="border: 1px solid black;">
+            Placeable units
             <!--{{selectedPlaceableUnit}}-->
             <!--<hr/>-->
-            <unit ng-repeat="unit in grid.purchasedUnits | filter: {isPlaced: false}" unit="unit"  />
+            <div ng-repeat="unit in grid.purchasedUnits | filter: {isPlaced: false}" >
+                <div class="cell-wrapper">
+                    <unit unit="unit" />
+                </div>
+            </div>
             <!--click="placeUnit"-->
         </div>
 
@@ -54,7 +59,7 @@
 
     <!-- purchasable units -->
     <div class="row">
-        <div ng-repeat="unit in grid.purchasableUnits">
+        <div ng-repeat="unit in grid.purchasableUnits" class="cell-wrapper">
             <unit unit="unit" />
             <!--click="purchaseUnit"-->
         </div>

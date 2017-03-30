@@ -7,11 +7,13 @@
     <unit unit="cell.unit" ng-show="cell.unit" />
     <!--click="handleUnitClick"-->
 
-    <span ng-show="cell.pipe1">pipe1</span>
-    <span ng-show="cell.pipe2">pipe2</span>
+    <div class="unit-wrapper">
+        <span ng-show="cell.pipe1">pipe1</span>
+        <span ng-show="cell.pipe2">pipe2</span>
+    </div>
 
     <!-- drop target -->
-    <div class=""
+    <div class="unit-wrapper"
          data-drop="true"
          data-jqyoui-options
          jqyoui-droppable="{'onDrop': 'drop()'}"

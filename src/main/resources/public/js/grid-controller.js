@@ -12,7 +12,7 @@ alchApp.controller('gridController', function(APIService, GridService, $scope, $
     }
     $scope.loadGrid();
 
-    $scope.$on("grid.updated", function(e, kvp){
+    $scope.$on("grid.update", function(e, kvp){
         $scope.grid = kvp.grid;
     });
 

@@ -57,7 +57,7 @@ public class GridController {
     }
 
     @RequestMapping(value = "/api/grid/{gridId}/units/", method = RequestMethod.POST)
-    public void purchaseUnit(@PathVariable Long gridId, @RequestBody UnitRequest unitRequest) {
+    public Grid purchaseUnit(@PathVariable Long gridId, @RequestBody UnitRequest unitRequest) {
         Grid grid = gridRepository.findOne(gridId);
 
 //        for (Unit unit : grid.getUnits()) {
@@ -71,8 +71,10 @@ public class GridController {
         ResourceInventory inv = grid.getResourceInventory().get(unit.getCostResourceType());
         inv.setAmount(inv.getAmount() - unit.getCostAmount());
         unit.setPurchased(true);
+
         gridRepository.save(grid);
-        return;
+        new GridManager(grid).populateGrid();
+        return grid;
 //            }
 //        }
     }
@@ -88,8 +90,8 @@ public class GridController {
 
         unit.setCol(unitRequest.getCol());
         unit.setRow(unitRequest.getRow());
-        gridRepository.save(grid);
 
+        gridRepository.save(grid);
         new GridManager(grid).populateGrid();
         return grid;
     }
