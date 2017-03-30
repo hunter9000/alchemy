@@ -46,7 +46,7 @@
             Placeable units
 
             <div ng-repeat="unit in grid.purchasedUnits | filter: {isPlaced: false}" >
-                <div class="cell-wrapper">
+                <div class="cell-wrapper inline-block">
                     <unit unit="unit" />
                 </div>
             </div>
@@ -63,7 +63,7 @@
 
     <!-- purchasable units -->
     <div class="row">
-        <div ng-repeat="unit in grid.purchasableUnits" class="cell-wrapper">
+        <div ng-repeat="unit in grid.purchasableUnits" class="cell-wrapper inline-block">
             <unit unit="unit" />
         </div>
     </div>

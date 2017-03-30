@@ -72,15 +72,48 @@ div#main {
     height:64px;
 }
 
-.cell-wrapper {
+.inline-block {
     display: inline-block;
-    position: relative;
+}
 
+.cell-wrapper {
+
+    position: relative;
 }
 
 .unit-wrapper {
     position: absolute;
     top: 0px;
     left: 0px;
-    /*border: 1px solid black;*/
+}
+
+.bordered {
+    border: 1px solid black;
+}
+
+.pipe-connector {
+    //background-color:lightgrey;
+    border: 1px solid lightgrey;
+    width:20px;
+    height: 20px;
+}
+
+.pipe-connector-left {
+    top: calc(64px/2 - 20px/2);
+    left: 0px;
+}
+
+.pipe-connector-right {
+    top: calc(64px/2 - 20px/2);
+    left: calc(64px - 20px);
+}
+
+.pipe-connector-top {
+    top: 0px;
+    left: calc(64px/2 - 20px/2);
+}
+
+.pipe-connector-bottom {
+    top: calc(64px - 20px);
+    left: calc(64px/2 - 20px/2);
 }

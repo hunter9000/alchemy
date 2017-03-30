@@ -1,5 +1,5 @@
 
-<div class="cell-wrapper" style="border: 1px solid black; " ng-click="isCellEmpty() && clickEmpty()">
+<div class="inline-block cell-wrapper bordered" ng-click="isCellEmpty() && clickEmpty()">
 
     <div style="top: -1px; position: absolute; left: -1px;">
         <unit unit="cell.unit" ng-show="cell.unit" />
@@ -17,7 +17,31 @@
              ng-model="cell.unit"
              ng-show="isCellEmpty()">
 
-            <span>empty</span>
+
+            <div class="cell-wrapper inline-block">
+                <!--<span class="unit-wrapper">empty</span>-->
+
+                <!-- left pipe connector -->
+                <div class="unit-wrapper pipe-connector pipe-connector-left">
+                    <!--L-->
+                </div>
+
+                <!-- right pipe connector -->
+                <div class="unit-wrapper pipe-connector pipe-connector-right">
+                    <!--R-->
+                </div>
+
+                <!-- top pipe connector -->
+                <div class="unit-wrapper pipe-connector pipe-connector-top">
+                    <!--T-->
+                </div>
+
+                <!-- bottom pipe connector -->
+                <div class="unit-wrapper pipe-connector pipe-connector-bottom">
+                    <!--B-->
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
