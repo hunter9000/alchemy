@@ -27,9 +27,6 @@
                       col="{{$index}}"
                       row="{{$parent.$index}}"
                       />
-                <!--unit-dropped="unitDropped"-->
-                <!--empty-cell-click="emptyCellClick"-->
-                <!--unit-click="unitClick"-->
             </div>
         </div>
 
@@ -38,18 +35,24 @@
     {"id":12,"col":null,"row":null,"type":"STOCKPILE","resourceOutputType":null,"resourceInputType":null,"purchased":true,"costAmount":0,"costResourceType":{"displayName":"Wood"},"canAfford":false,"isPlaced":false}
 -->
         <!-- PLACAEABLE UNITS -->
-        <div class="col-md-3" style="border: 1px solid black;">
+        <!--<div class="col-md-3" >-->
+
+        <div class="col-md-3" style="border: 1px solid black;"
+             data-drop="true"
+             data-jqyoui-options
+             jqyoui-droppable="{'onDrop': 'drop()'}"
+             ng-model="droppedUnit">
+
             Placeable units
-            <!--{{selectedPlaceableUnit}}-->
-            <!--<hr/>-->
+
             <div ng-repeat="unit in grid.purchasedUnits | filter: {isPlaced: false}" >
                 <div class="cell-wrapper">
                     <unit unit="unit" />
                 </div>
             </div>
-            <!--click="placeUnit"-->
         </div>
 
+        <!-- resources -->
         <div class="col-md-3">
             <div ng-repeat="(resourceType, resource) in grid.resourceInventory">
                 {{resource.type.displayName}}: {{resource.amount}}
@@ -57,11 +60,11 @@
         </div>
     </div>
 
+
     <!-- purchasable units -->
     <div class="row">
         <div ng-repeat="unit in grid.purchasableUnits" class="cell-wrapper">
             <unit unit="unit" />
-            <!--click="purchaseUnit"-->
         </div>
     </div>
 </div>

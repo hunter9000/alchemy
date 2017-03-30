@@ -3,6 +3,8 @@ alchApp.controller('gridController', function(APIService, GridService, $scope, $
 
     $scope.grid = {};
 
+    $scope.droppedUnit = null;
+
     $scope.loadGrid = function() {
     //https://github.com/rclayton/NG-Communicate-Ctrls/blob/master/service/index.html
 
@@ -22,6 +24,12 @@ alchApp.controller('gridController', function(APIService, GridService, $scope, $
 //            $scope.loadGrid();
 //        })
 //    }
+
+    /** unit has been dragged from the grid to here, unplace it. */
+    $scope.drop = function() {
+        console.log($scope.droppedUnit);
+        GridService.unplaceUnit($routeParams.gridId, $scope.droppedUnit.id);
+    }
 
     $scope.delete = function() {
         APIService.deleteGrid($routeParams.gridId, function(response) {

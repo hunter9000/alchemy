@@ -75,11 +75,12 @@ div#main {
 .cell-wrapper {
     display: inline-block;
     position: relative;
-    border: 1px solid black;
+
 }
 
 .unit-wrapper {
     position: absolute;
     top: 0px;
     left: 0px;
+    /*border: 1px solid black;*/
 }

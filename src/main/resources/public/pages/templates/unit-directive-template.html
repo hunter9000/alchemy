@@ -1,52 +1,32 @@
-<!--
-{
-    "id":1,
 
-    "col":null,
-    "y":null,
-
-    "type":"SOURCE",
-    "resourceOutputType":{"displayName":"Wood"},
-    "resourceInputType":null,
-
-    "costAmount":10,
-    "costResourceType":{"displayName":"Wood"},
-
-    "purchased":false,
-    "isPlaced":false
-}
--->
-
-<div class="unit-wrapper"
+<div class="unit-wrapper" style="border: 1px solid black; z-index:10;"
      ng-click="handleClick(unit)"
      data-drag="draggable()"
      data-jqyoui-options="{revert: 'invalid'}"
      jqyoui-draggable="{animate:true}"
      ng-model="unit">
 
-    <div style="position:relative;">
+    <div style="position:relative; ">
         <div class="unit-wrapper">
             <!-- image goes here instead -->
             {{unit.type}}
         </div>
 
+        <!-- purchase cost -->
         <div class="unit-wrapper">
             <span ng-show="!unit.purchased">
                 Cost: {{unit.costAmount}} {{unit.costResourceType.displayName}}
                 afford:{{unit.canAfford}}
-                <!--<button class="btn btn-primary" ng-show="unit.canAfford" ng-click="">purchase</button>-->
             </span>
         </div>
 
-        <div class="unit-wrapper">
-            <div ng-show="unit.purchased && unit.isPlaced">
-                <span ng-click="unplace()">X</span>
-            </div>
-        </div>
+        <!--<div class="unit-wrapper">-->
+            <!--<div ng-show="unit.purchased && unit.isPlaced">-->
+                <!--<span ng-click="unplace()">X</span>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 </div>
-<!-- delete button -->
-
 
 <!--<div class="btn btn-primary"-->
      <!--data-drag="true"-->

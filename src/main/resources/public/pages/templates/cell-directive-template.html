@@ -1,26 +1,24 @@
 
-<div class="cell-wrapper" ng-click="isCellEmpty() && clickEmpty()">
-    <!--row{{y}}-->
-    <!--col{{x}}-->
+<div class="cell-wrapper" style="border: 1px solid black; " ng-click="isCellEmpty() && clickEmpty()">
 
-    <!--<span ng-show="cell.unit">unit</span>-->
-    <unit unit="cell.unit" ng-show="cell.unit" />
-    <!--click="handleUnitClick"-->
+    <div style="top: -1px; position: absolute; left: -1px;">
+        <unit unit="cell.unit" ng-show="cell.unit" />
 
-    <div class="unit-wrapper">
-        <span ng-show="cell.pipe1">pipe1</span>
-        <span ng-show="cell.pipe2">pipe2</span>
-    </div>
+        <div class="unit-wrapper">
+            <span ng-show="cell.pipe1">pipe1</span>
+            <span ng-show="cell.pipe2">pipe2</span>
+        </div>
 
-    <!-- drop target -->
-    <div class="unit-wrapper"
-         data-drop="true"
-         data-jqyoui-options
-         jqyoui-droppable="{'onDrop': 'drop()'}"
-         ng-model="cell.unit"
-         ng-show="isCellEmpty()">
+        <!-- drop target -->
+        <div class="unit-wrapper"
+             data-drop="true"
+             data-jqyoui-options
+             jqyoui-droppable="{'onDrop': 'drop()'}"
+             ng-model="cell.unit"
+             ng-show="isCellEmpty()">
 
-        <span>empty</span>
+            <span>empty</span>
+        </div>
     </div>
 </div>
 
