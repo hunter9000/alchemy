@@ -1,4 +1,6 @@
 <!--
+unit directive template
+
 {
     "id":1,
 
@@ -17,15 +19,17 @@
 }
 -->
 
-<div class="cell-wrapper cell"
+<div class="cell"
      ng-click="handleClick(unit)"
-     data-drag="true"
+     data-drag="{{draggable()}}"
      data-jqyoui-options="{revert: 'invalid'}"
      jqyoui-draggable="{animate:true}"
-     ng-model="unit">
+     ng-model="unit"
+     style="text-align: initial; ">
+    <!--position: absolute; left: 0px; top: 0px;-->
 
     <!-- image goes here instead -->
-    <img src="{{image}}" style="position: absolute;" />
+    <img ng-src="{{image}}" style="position: absolute;" />
     <!--{{unit.type}}: [{{unit.resourceInputType.displayName}}&ndash;&gt;{{unit.resourceOutputType.displayName}}]-->
 
     <span ng-show="!unit.purchased">
@@ -34,9 +38,9 @@
         <!--<button class="btn btn-primary" ng-show="unit.canAfford" ng-click="">purchase</button>-->
     </span>
 
-    <div ng-show="unit.purchased && unit.isPlaced">
-        <span ng-click="unplace()">X</span>
-    </div>
+    <!--<div ng-show="unit.purchased && unit.isPlaced">-->
+        <!--<span ng-click="unplace()">X</span>-->
+    <!--</div>-->
 </div>
 <!-- delete button -->
 

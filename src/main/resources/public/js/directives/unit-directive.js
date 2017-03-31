@@ -8,6 +8,13 @@ alchApp.directive('unit', function(APIService, GridService, $routeParams) {
 			click: '&',
 		},
         controller:function($scope, $window, $http, $location) {
+            $scope.draggable = function() {
+                if ($scope.unit) {
+                    return $scope.unit.purchased && !$scope.unit.isPlaced;
+                }
+                return false;
+            }
+
             $scope.handleClick = function() {
                 if (!$scope.unit.purchased) {
                     if ($scope.unit.canAfford) {
@@ -21,12 +28,12 @@ alchApp.directive('unit', function(APIService, GridService, $routeParams) {
 //                }
             }
 
-            $scope.unplace = function() {
-                console.log('unplacing unit ' + $scope.unit.id);
-
-                GridService.unplaceUnit($routeParams.gridId, $scope.unit.id);
-
-            }
+//            $scope.unplace = function() {
+//                console.log('unplacing unit ' + $scope.unit.id);
+//
+//                GridService.unplaceUnit($routeParams.gridId, $scope.unit.id);
+//
+//            }
             $scope.image = '/images/wood.png'
         },
     }

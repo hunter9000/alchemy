@@ -57,11 +57,8 @@ public class GridController {
     }
 
     @RequestMapping(value = "/api/grid/{gridId}/units/", method = RequestMethod.POST)
-    public void purchaseUnit(@PathVariable Long gridId, @RequestBody UnitRequest unitRequest) {
+    public Grid purchaseUnit(@PathVariable Long gridId, @RequestBody UnitRequest unitRequest) {
         Grid grid = gridRepository.findOne(gridId);
-
-//        for (Unit unit : grid.getUnits()) {
-//            if (unit.getId().equals(unitRequest.getId())) {
 
         Unit unit = new GridManager(grid).getUnit(unitRequest.getId());
         if (unit == null) {
@@ -72,9 +69,9 @@ public class GridController {
         inv.setAmount(inv.getAmount() - unit.getCostAmount());
         unit.setPurchased(true);
         gridRepository.save(grid);
-        return;
-//            }
-//        }
+
+        new GridManager(grid).populateGrid();
+        return grid;
     }
 
     @RequestMapping(value = "/api/grid/{gridId}/units/", method = RequestMethod.PUT)
