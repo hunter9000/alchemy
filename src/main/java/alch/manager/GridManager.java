@@ -33,18 +33,18 @@ public class GridManager {
 
         Set<Unit> units = new HashSet<>();
         // sources
-        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_WOOD, 10, ResourceType.WOOD, new UnitConnection(ResourceType.WOOD, DirectionType.E, false) ));
-        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_DIRT,10, ResourceType.WOOD, new UnitConnection(ResourceType.DIRT, DirectionType.E, false) ));
-        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_GRASS,10, ResourceType.WOOD,  new UnitConnection(ResourceType.GRASS, DirectionType.E, false) ));
-        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_ROCK,10, ResourceType.WOOD,  new UnitConnection(ResourceType.ROCK, DirectionType.E, false) ));
-        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_WATER,10, ResourceType.WOOD,  new UnitConnection(ResourceType.WATER, DirectionType.E, false) ));
+        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_WOOD, 10, ResourceType.WOOD, new UnitConnection(ResourceType.WOOD, DirectionType.EAST, false) ));
+        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_DIRT,10, ResourceType.WOOD, new UnitConnection(ResourceType.DIRT, DirectionType.EAST, false) ));
+        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_GRASS,10, ResourceType.WOOD,  new UnitConnection(ResourceType.GRASS, DirectionType.EAST, false) ));
+        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_ROCK,10, ResourceType.WOOD,  new UnitConnection(ResourceType.ROCK, DirectionType.EAST, false) ));
+        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_WATER,10, ResourceType.WOOD,  new UnitConnection(ResourceType.WATER, DirectionType.EAST, false) ));
         // transmuters
-        units.add(createUnit(grid, UnitType.TRANSMUTER, UnitDefinitionType.TRANSMUTER_WOOD_DIRT,0, ResourceType.WOOD, new UnitConnection(ResourceType.WOOD, DirectionType.W, true),
-                                                                                                                                  new UnitConnection(ResourceType.DIRT, DirectionType.E, false)));
+        units.add(createUnit(grid, UnitType.TRANSMUTER, UnitDefinitionType.TRANSMUTER_WOOD_DIRT,0, ResourceType.WOOD, new UnitConnection(ResourceType.WOOD, DirectionType.WEST, true),
+                                                                                                                                  new UnitConnection(ResourceType.DIRT, DirectionType.EAST, false)));
         // stockpiles
-        units.add(createUnit(grid, UnitType.STOCKPILE, UnitDefinitionType.STOCKPILE_WOOD,0, ResourceType.WOOD, new UnitConnection(ResourceType.WOOD, DirectionType.N, true)));
-        units.add(createUnit(grid, UnitType.STOCKPILE, UnitDefinitionType.STOCKPILE_DIRT,50, ResourceType.WOOD, new UnitConnection(ResourceType.DIRT, DirectionType.N, true)));
-        units.add(createUnit(grid, UnitType.STOCKPILE, UnitDefinitionType.STOCKPILE_GRASS,100, ResourceType.WOOD, new UnitConnection(ResourceType.GRASS, DirectionType.N, true)));
+        units.add(createUnit(grid, UnitType.STOCKPILE, UnitDefinitionType.STOCKPILE_WOOD,0, ResourceType.WOOD, new UnitConnection(ResourceType.WOOD, DirectionType.NORTH, true)));
+        units.add(createUnit(grid, UnitType.STOCKPILE, UnitDefinitionType.STOCKPILE_DIRT,50, ResourceType.WOOD, new UnitConnection(ResourceType.DIRT, DirectionType.NORTH, true)));
+        units.add(createUnit(grid, UnitType.STOCKPILE, UnitDefinitionType.STOCKPILE_GRASS,100, ResourceType.WOOD, new UnitConnection(ResourceType.GRASS, DirectionType.NORTH, true)));
 
         grid.setUnits(units);
 

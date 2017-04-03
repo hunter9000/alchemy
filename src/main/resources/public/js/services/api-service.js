@@ -1,5 +1,8 @@
 
 alchApp.factory('APIService', function($window, $location, $http, $log) {
+
+    // TODO make funcitons private like in gridservice if it works
+
     return {
         getHeaders: function() {
             return { headers: {'x-access-token': $window.localStorage['jwtToken']} };
@@ -103,6 +106,10 @@ alchApp.factory('APIService', function($window, $location, $http, $log) {
 
         placeUnit(gridId, unitId, data, successCallback) {
             this.put('/api/grid/'+gridId+'/units/', data, successCallback);
+        },
+
+        placePipe(gridId, data, successCallback) {
+            this.post('/api/grid/'+gridId+'/pipes/', data, successCallback);
         },
 
 //		getPurchasableUnits: function(gridId, successCallback) {

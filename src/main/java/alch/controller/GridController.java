@@ -1,11 +1,10 @@
 package alch.controller;
 
 import alch.manager.GridManager;
-import alch.model.Grid;
-import alch.model.ResourceInventory;
-import alch.model.Unit;
+import alch.model.*;
 import alch.model.user.User;
 import alch.repository.GridRepository;
+import alch.request.PipePlaceRequest;
 import alch.request.UnitRequest;
 import alch.security.BadRequestException;
 import alch.util.AuthUtils;
@@ -90,6 +89,35 @@ public class GridController {
 
         unit.setCol(unitRequest.getCol());
         unit.setRow(unitRequest.getRow());
+
+        gridRepository.save(grid);
+        new GridManager(grid).populateGrid();
+        return grid;
+    }
+
+    @RequestMapping(value = "/api/grid/{gridId}/pipes/", method = RequestMethod.POST)
+    public Grid placePipe(@PathVariable Long gridId, @RequestBody PipePlaceRequest pipePlaceRequest) {
+        Grid grid = gridRepository.findOne(gridId);
+
+        // find and delete the existing pipes that are already in the directions specified
+        new GridManager(grid).populateGrid();
+        Cell cell = grid.getCells()[pipePlaceRequest.getRow()][pipePlaceRequest.getCol()];
+        if (cell.pipe1 != null) {
+            if (cell.pipe1.matchesDirection(pipePlaceRequest.getDir1()) || cell.pipe1.matchesDirection(pipePlaceRequest.getDir2())) {
+                grid.getPipes().remove(cell.pipe1);
+            }
+            if (cell.pipe2.matchesDirection(pipePlaceRequest.getDir1()) || cell.pipe2.matchesDirection(pipePlaceRequest.getDir2())) {
+                grid.getPipes().remove(cell.pipe2);
+            }
+        }
+
+        Pipe newPipe = new Pipe();
+        newPipe.setGrid(grid);
+        newPipe.setCol(pipePlaceRequest.getCol());
+        newPipe.setRow(pipePlaceRequest.getRow());
+        newPipe.setInDirection(pipePlaceRequest.getDir1());
+        newPipe.setOutDirection(pipePlaceRequest.getDir2());
+        grid.getPipes().add(newPipe);
 
         gridRepository.save(grid);
         new GridManager(grid).populateGrid();

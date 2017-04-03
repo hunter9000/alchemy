@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -42,7 +41,7 @@ public class Grid {
     private Set<Unit> purchasableUnits;
 
     @OneToMany(mappedBy = "grid", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Pipe> pipes;
+    private Set<Pipe> pipes;
 
 //    @OneToMany(mappedBy = "grid", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 //    private List<PurchasedUnit> purchasedUnits;
@@ -107,10 +106,10 @@ public class Grid {
         this.purchasableUnits = purchasableUnits;
     }
 
-    public List<Pipe> getPipes() {
+    public Set<Pipe> getPipes() {
         return pipes;
     }
-    public void setPipes(List<Pipe> pipes) {
+    public void setPipes(Set<Pipe> pipes) {
         this.pipes = pipes;
     }
 

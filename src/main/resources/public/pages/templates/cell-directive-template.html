@@ -9,36 +9,52 @@
             <span ng-show="cell.pipe2">pipe2</span>
         </div>
 
-        <!-- drop target -->
+        <!-- drop target for units -->
         <div class="unit-wrapper"
              data-drop="true"
-             data-jqyoui-options
-             jqyoui-droppable="{'onDrop': 'drop()'}"
+             data-jqyoui-options="{'scope': 'units'}"
+             jqyoui-droppable="{'onDrop': 'unitDrop()'}"
              ng-model="cell.unit"
              ng-show="isCellEmpty()">
 
-
-            <div class="cell-wrapper inline-block">
+            <!-- PIPES -->
+            <div class="cell-wrapper inline-block" style="z-index: 20">
                 <!--<span class="unit-wrapper">empty</span>-->
 
                 <!-- left pipe connector -->
-                <div class="unit-wrapper pipe-connector pipe-connector-left">
-                    <!--L-->
+                <div class="unit-wrapper pipe-connector pipe-connector-left"
+                     data-drag="true"
+                     data-jqyoui-options="{revert: 'invalid', 'scope': 'pipes{{col}}{{row}}'}"
+                     jqyoui-draggable
+
+                     ng-model="lPipeDir"
+                    >
+                    <!--ng-model="getPipeAt('left')"-->
+
+                    L
                 </div>
 
                 <!-- right pipe connector -->
-                <div class="unit-wrapper pipe-connector pipe-connector-right">
-                    <!--R-->
+                <div class="unit-wrapper pipe-connector pipe-connector-right"
+                     data-drop="true"
+                     data-jqyoui-options="{'scope': 'pipes{{col}}{{row}}'}"
+                     jqyoui-droppable="{'onDrop': 'pipeDrop()'}"
+
+                     ng-model="rPipeDir"
+                     >
+                    <!--ng-model="getPipeAt('right')"-->
+
+                    R
                 </div>
 
                 <!-- top pipe connector -->
                 <div class="unit-wrapper pipe-connector pipe-connector-top">
-                    <!--T-->
+                    T
                 </div>
 
                 <!-- bottom pipe connector -->
                 <div class="unit-wrapper pipe-connector pipe-connector-bottom">
-                    <!--B-->
+                    B
                 </div>
             </div>
 

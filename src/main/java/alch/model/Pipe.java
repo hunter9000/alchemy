@@ -53,6 +53,11 @@ public class Pipe {
         return null;
     }
 
+    @Transient
+    @JsonIgnore
+    public boolean matchesDirection(DirectionType dir) {
+        return inDirection == dir || outDirection == dir;
+    }
 
     public Long getId() {
         return id;
@@ -95,4 +100,5 @@ public class Pipe {
     public void setOutDirection(DirectionType outDirection) {
         this.outDirection = outDirection;
     }
+
 }

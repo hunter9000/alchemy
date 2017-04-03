@@ -124,16 +124,16 @@ public class GridProcessingManager {
     }
 
     private UnitConnectionInfo getConnectedNeighborCell(Integer row, Integer col, DirectionType entryDir) {
-        if (entryDir == DirectionType.E) {
+        if (entryDir == DirectionType.EAST) {
             col++;
         }
-        if (entryDir == DirectionType.N) {
+        if (entryDir == DirectionType.NORTH) {
             row--;
         }
-        if (entryDir == DirectionType.S) {
+        if (entryDir == DirectionType.SOUTH) {
             row++;
         }
-        if (entryDir == DirectionType.W) {
+        if (entryDir == DirectionType.WEST) {
             col--;
         }
         if (!isInBounds(row, col)) {

@@ -60,14 +60,14 @@ public class GridProcessingManagerTest {
         sourceTransmuterPipe = new Pipe();
         sourceTransmuterPipe.setRow(0);
         sourceTransmuterPipe.setCol(1);
-        sourceTransmuterPipe.setInDirection(DirectionType.W);
-        sourceTransmuterPipe.setOutDirection(DirectionType.E);
+        sourceTransmuterPipe.setInDirection(DirectionType.WEST);
+        sourceTransmuterPipe.setOutDirection(DirectionType.EAST);
 
         transmuterStockpilePipe = new Pipe();
         transmuterStockpilePipe.setRow(0);
         transmuterStockpilePipe.setCol(3);
-        transmuterStockpilePipe.setInDirection(DirectionType.W);
-        transmuterStockpilePipe.setOutDirection(DirectionType.S);
+        transmuterStockpilePipe.setInDirection(DirectionType.WEST);
+        transmuterStockpilePipe.setOutDirection(DirectionType.SOUTH);
 
         List<Pipe> pipes = new ArrayList<>();
         pipes.add(sourceTransmuterPipe);
