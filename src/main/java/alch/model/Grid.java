@@ -40,7 +40,7 @@ public class Grid {
     @JsonProperty(value = "purchasableUnits")
     private Set<Unit> purchasableUnits;
 
-    @OneToMany(mappedBy = "grid", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "grid", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Pipe> pipes;
 
 //    @OneToMany(mappedBy = "grid", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

@@ -117,3 +117,7 @@ div#main {
     top: calc(64px - 20px);
     left: calc(64px/2 - 20px/2);
 }
+
+.pipe-connector-inner {
+    margin: -1px;
+}

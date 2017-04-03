@@ -102,13 +102,11 @@ public class GridController {
         // find and delete the existing pipes that are already in the directions specified
         new GridManager(grid).populateGrid();
         Cell cell = grid.getCells()[pipePlaceRequest.getRow()][pipePlaceRequest.getCol()];
-        if (cell.pipe1 != null) {
-            if (cell.pipe1.matchesDirection(pipePlaceRequest.getDir1()) || cell.pipe1.matchesDirection(pipePlaceRequest.getDir2())) {
-                grid.getPipes().remove(cell.pipe1);
-            }
-            if (cell.pipe2.matchesDirection(pipePlaceRequest.getDir1()) || cell.pipe2.matchesDirection(pipePlaceRequest.getDir2())) {
-                grid.getPipes().remove(cell.pipe2);
-            }
+        if (cell.pipe1 != null && (cell.pipe1.matchesDirection(pipePlaceRequest.getDir1()) || cell.pipe1.matchesDirection(pipePlaceRequest.getDir2()))) {
+            grid.getPipes().remove(cell.pipe1);
+        }
+        if (cell.pipe2 != null && (cell.pipe2.matchesDirection(pipePlaceRequest.getDir1()) || cell.pipe2.matchesDirection(pipePlaceRequest.getDir2()))) {
+            grid.getPipes().remove(cell.pipe2);
         }
 
         Pipe newPipe = new Pipe();

@@ -16,49 +16,99 @@
              jqyoui-droppable="{'onDrop': 'unitDrop()'}"
              ng-model="cell.unit"
              ng-show="isCellEmpty()">
+        </div>
 
-            <!-- PIPES -->
-            <div class="cell-wrapper inline-block" style="z-index: 20">
-                <!--<span class="unit-wrapper">empty</span>-->
+        <!-- PIPES -->
+        <div class="cell-wrapper inline-block" style="z-index: 20">
+            <!--<span class="unit-wrapper">empty</span>-->
 
-                <!-- left pipe connector -->
-                <div class="unit-wrapper pipe-connector pipe-connector-left"
+            <div class="unit-wrapper">
+                <span ng-show="cell.pipe1">pipe1 {{cell.pipe1.inDirection}} {{cell.pipe1.outDirection}}</span>
+                <span ng-show="cell.pipe2">pipe2 {{cell.pipe2.inDirection}} {{cell.pipe2.outDirection}}</span>
+            </div>
+
+            <!-- left pipe connector -->
+            <div class="unit-wrapper pipe-connector pipe-connector-left"
+                 data-drop="true"
+                 data-jqyoui-options="{'scope': 'pipes{{col}}{{row}}'}"
+                 jqyoui-droppable="{'onDrop': 'pipeDrop()'}"
+                 ng-model="lPipeDir">
+
+                <div class="pipe-connector pipe-connector-inner"
                      data-drag="true"
                      data-jqyoui-options="{revert: 'invalid', 'scope': 'pipes{{col}}{{row}}'}"
                      jqyoui-draggable
-
-                     ng-model="lPipeDir"
-                    >
-                    <!--ng-model="getPipeAt('left')"-->
-
+                     ng-model="lPipeDir">
                     L
-                </div>
-
-                <!-- right pipe connector -->
-                <div class="unit-wrapper pipe-connector pipe-connector-right"
-                     data-drop="true"
-                     data-jqyoui-options="{'scope': 'pipes{{col}}{{row}}'}"
-                     jqyoui-droppable="{'onDrop': 'pipeDrop()'}"
-
-                     ng-model="rPipeDir"
-                     >
-                    <!--ng-model="getPipeAt('right')"-->
-
-                    R
-                </div>
-
-                <!-- top pipe connector -->
-                <div class="unit-wrapper pipe-connector pipe-connector-top">
-                    T
-                </div>
-
-                <!-- bottom pipe connector -->
-                <div class="unit-wrapper pipe-connector pipe-connector-bottom">
-                    B
                 </div>
             </div>
 
+            <!-- right pipe connector -->
+            <!--<div class="unit-wrapper pipe-connector pipe-connector-right"-->
+                 <!--data-drop="true"-->
+                 <!--data-jqyoui-options="{'scope': 'pipes{{col}}{{row}}'}"-->
+                 <!--jqyoui-droppable="{'onDrop': 'pipeDrop()'}"-->
+
+                 <!--ng-model="rPipeDir"-->
+            <!--&gt;-->
+                <!--&lt;!&ndash;ng-model="getPipeAt('right')"&ndash;&gt;-->
+
+                <!--R-->
+            <!--</div>-->
+            <div class="unit-wrapper pipe-connector pipe-connector-right"
+                 data-drop="true"
+                 data-jqyoui-options="{'scope': 'pipes{{col}}{{row}}'}"
+                 jqyoui-droppable="{'onDrop': 'pipeDrop()'}"
+                 ng-model="rPipeDir">
+
+                <div class="pipe-connector pipe-connector-inner"
+                     data-drag="true"
+                     data-jqyoui-options="{revert: 'invalid', 'scope': 'pipes{{col}}{{row}}'}"
+                     jqyoui-draggable
+                     ng-model="rPipeDir">
+                    R
+                </div>
+            </div>
+
+            <!-- top pipe connector -->
+            <!--<div class="unit-wrapper pipe-connector pipe-connector-top">-->
+                <!--T-->
+            <!--</div>-->
+            <div class="unit-wrapper pipe-connector pipe-connector-top"
+                 data-drop="true"
+                 data-jqyoui-options="{'scope': 'pipes{{col}}{{row}}'}"
+                 jqyoui-droppable="{'onDrop': 'pipeDrop()'}"
+                 ng-model="tPipeDir">
+
+                <div class="pipe-connector pipe-connector-inner"
+                     data-drag="true"
+                     data-jqyoui-options="{revert: 'invalid', 'scope': 'pipes{{col}}{{row}}'}"
+                     jqyoui-draggable
+                     ng-model="tPipeDir">
+                    T
+                </div>
+            </div>
+
+            <!-- bottom pipe connector -->
+            <!--<div class="unit-wrapper pipe-connector pipe-connector-bottom">-->
+                <!--B-->
+            <!--</div>-->
+            <div class="unit-wrapper pipe-connector pipe-connector-bottom"
+                 data-drop="true"
+                 data-jqyoui-options="{'scope': 'pipes{{col}}{{row}}'}"
+                 jqyoui-droppable="{'onDrop': 'pipeDrop()'}"
+                 ng-model="bPipeDir">
+
+                <div class="pipe-connector pipe-connector-inner"
+                     data-drag="true"
+                     data-jqyoui-options="{revert: 'invalid', 'scope': 'pipes{{col}}{{row}}'}"
+                     jqyoui-draggable
+                     ng-model="bPipeDir">
+                    B
+                </div>
+            </div>
         </div>
+
     </div>
 </div>
 
