@@ -93,7 +93,7 @@ public class GridManager {
                     cells[y][x].pipe2 = pipe;
                 } else {
 
-                    throw new RuntimeException("more than 2 pipes");
+//                    throw new RuntimeException("more than 2 pipes");
                 }
             }
         }

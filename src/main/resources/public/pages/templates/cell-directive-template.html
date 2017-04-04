@@ -32,13 +32,15 @@
                  data-drop="true"
                  data-jqyoui-options="{'scope': 'pipes{{col}}{{row}}'}"
                  jqyoui-droppable="{'onDrop': 'pipeDrop()'}"
-                 ng-model="lPipeDir">
+                 ng-model="lPipeDir"
+                 >
 
                 <div class="pipe-connector pipe-connector-inner"
                      data-drag="true"
                      data-jqyoui-options="{revert: 'invalid', 'scope': 'pipes{{col}}{{row}}'}"
-                     jqyoui-draggable
-                     ng-model="lPipeDir">
+                     jqyoui-draggable="{onStart: 'startDragging'}"
+                     ng-model="lPipeDir"
+                     ng-click="removePipe(lPipeDir)">
                     L
                 </div>
             </div>
@@ -64,8 +66,9 @@
                 <div class="pipe-connector pipe-connector-inner"
                      data-drag="true"
                      data-jqyoui-options="{revert: 'invalid', 'scope': 'pipes{{col}}{{row}}'}"
-                     jqyoui-draggable
-                     ng-model="rPipeDir">
+                     jqyoui-draggable="{onStart: 'startDragging'}"
+                     ng-model="rPipeDir"
+                     ng-click="removePipe(rPipeDir)">
                     R
                 </div>
             </div>
@@ -83,8 +86,9 @@
                 <div class="pipe-connector pipe-connector-inner"
                      data-drag="true"
                      data-jqyoui-options="{revert: 'invalid', 'scope': 'pipes{{col}}{{row}}'}"
-                     jqyoui-draggable
-                     ng-model="tPipeDir">
+                     jqyoui-draggable="{onStart: 'startDragging'}"
+                     ng-model="tPipeDir"
+                     ng-click="removePipe(tPipeDir)">
                     T
                 </div>
             </div>
@@ -102,8 +106,9 @@
                 <div class="pipe-connector pipe-connector-inner"
                      data-drag="true"
                      data-jqyoui-options="{revert: 'invalid', 'scope': 'pipes{{col}}{{row}}'}"
-                     jqyoui-draggable
-                     ng-model="bPipeDir">
+                     jqyoui-draggable="{onStart: 'startDragging'}"
+                     ng-model="bPipeDir"
+                     ng-click="removePipe(bPipeDir)">
                     B
                 </div>
             </div>

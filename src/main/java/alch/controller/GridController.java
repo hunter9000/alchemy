@@ -8,6 +8,8 @@ import alch.request.PipePlaceRequest;
 import alch.request.UnitRequest;
 import alch.security.BadRequestException;
 import alch.util.AuthUtils;
+import alch.util.PipeUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -99,16 +101,18 @@ public class GridController {
     public Grid placePipe(@PathVariable Long gridId, @RequestBody PipePlaceRequest pipePlaceRequest) {
         Grid grid = gridRepository.findOne(gridId);
 
-        // find and delete the existing pipes that are already in the directions specified
         new GridManager(grid).populateGrid();
         Cell cell = grid.getCells()[pipePlaceRequest.getRow()][pipePlaceRequest.getCol()];
-        if (cell.pipe1 != null && (cell.pipe1.matchesDirection(pipePlaceRequest.getDir1()) || cell.pipe1.matchesDirection(pipePlaceRequest.getDir2()))) {
+
+        // find and delete the existing pipes that are already in the directions specified
+        if (PipeUtils.isImperfectMatch(cell.pipe1, pipePlaceRequest)) {
             grid.getPipes().remove(cell.pipe1);
         }
-        if (cell.pipe2 != null && (cell.pipe2.matchesDirection(pipePlaceRequest.getDir1()) || cell.pipe2.matchesDirection(pipePlaceRequest.getDir2()))) {
+        if (PipeUtils.isImperfectMatch(cell.pipe2, pipePlaceRequest)) {
             grid.getPipes().remove(cell.pipe2);
         }
 
+        // create new pipe
         Pipe newPipe = new Pipe();
         newPipe.setGrid(grid);
         newPipe.setCol(pipePlaceRequest.getCol());
@@ -116,6 +120,28 @@ public class GridController {
         newPipe.setInDirection(pipePlaceRequest.getDir1());
         newPipe.setOutDirection(pipePlaceRequest.getDir2());
         grid.getPipes().add(newPipe);
+
+        gridRepository.save(grid);
+        new GridManager(grid).populateGrid();
+        return grid;
+    }
+
+    @RequestMapping(value = "/api/grid/{gridId}/pipes/{pipeId}/", method = RequestMethod.DELETE)
+    public Grid removePipe(@PathVariable Long gridId, @PathVariable Long pipeId) {
+        Grid grid = gridRepository.findOne(gridId);
+
+//        new GridManager(grid).populateGrid();
+
+        // find and delete the existing pipes that are already in the directions specified
+//        Cell cell = grid.getCells()[pipePlaceRequest.getRow()][pipePlaceRequest.getCol()];
+
+//        if (PipeUtils.isPerfectMatch(cell.pipe1, pipePlaceRequest)) {
+//            grid.getPipes().remove(cell.pipe1);
+//        }
+//        else if (PipeUtils.isPerfectMatch(cell.pipe2, pipePlaceRequest)) {
+//            grid.getPipes().remove(cell.pipe2);
+//        }
+        CollectionUtils.filterInverse(grid.getPipes(), pipe -> { return pipe.getId().equals(pipeId); } );
 
         gridRepository.save(grid);
         new GridManager(grid).populateGrid();

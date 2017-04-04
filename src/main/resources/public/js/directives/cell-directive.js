@@ -5,10 +5,8 @@ alchApp.directive('cell', function(APIService, GridService, $routeParams, $log) 
 		restrict: 'E',
 		scope: {
 			cell: '=',
-			col: '@',     // col (x)
-			row: '@',     // row (y)
-
-
+			col: '@',
+			row: '@',
 		},
         controller:function($scope, $window, $http, $location) {
             $scope.lPipeDir = 'WEST';
@@ -20,45 +18,46 @@ alchApp.directive('cell', function(APIService, GridService, $routeParams, $log) 
                 return !$scope.cell.unit && !$scope.cell.pipe1 && !$scope.cell.pipe2;
             }
 
-//            $scope.pipeClick = function() {
-//                // nothing yet
-//            }
-//            $scope.clickEmpty = function() {
-//                console.log('cell directive clicked empty cell');
-//            }
-
             $scope.unitDrop = function() {
-                console.log('dropped unit id: ' + $scope.cell.unit.id);
-                console.log('isempty: ' + $scope.isCellEmpty());
+                $log.debug('dropped unit id: ' + $scope.cell.unit.id);
+                $log.debug('isempty: ' + $scope.isCellEmpty());
 
                 GridService.placeUnit($routeParams.gridId, $scope.cell.unit.id, $scope.row, $scope.col);
             }
 
-//            $scope.setupPipes = function(pipe) {
-//                if (pipe) {
-//                    if (pipe.inDirection == 'WEST') {
-//                        $scope.cell.lPipe = pipe;
-//                    }
-//                    if (pipe.inDirection == 'EAST') {
-//                        $scope.cell.rPipe = pipe;
-//                    }
-//                    if (pipe.inDirection == 'NORTH') {
-//                        $scope.cell.tPipe = pipe;
-//                    }
-//                    if (pipe.inDirection == 'SOUTH') {
-//                        $scope.cell.bPipe = pipe;
-//                    }
-//                }
-
-//            }
-//            $scope.setupPipes($scope.cell.pipe1);
-//            $scope.setupPipes($scope.cell.pipe2);
-
             $scope.pipeDrop = function() {
                 $log.debug('dropped pipe from ' + $scope.dndDragItem + ' to ' + $scope.dndDropItem);
+                if ($scope.dndDragItem == $scope.dndDropItem) {
+                    return;
+                }
                 GridService.placePipe($routeParams.gridId, $scope.row, $scope.col, $scope.dndDragItem, $scope.dndDropItem);
             }
 
+            $scope.startDragging = function() {
+                $scope.dragging = true;
+            };
+
+            $scope.removePipe = function(pipeDir) {
+                if ($scope.dragging) {
+                    return;
+                }
+
+                if (!$scope.cell) {
+                    return;
+                }
+                if ($scope.cell.pipe1 && ($scope.cell.pipe1.inDirection == pipeDir || $scope.cell.pipe1.outDirection == pipeDir) ) {
+                    // delete pipe1
+                    GridService.removePipe($routeParams.gridId, $scope.cell.pipe1.id);
+                    return;
+                }
+                if ($scope.cell.pipe2 && ($scope.cell.pipe2.inDirection == pipeDir || $scope.cell.pipe2.outDirection == pipeDir) ) {
+                    // delete pipe2
+                    GridService.removePipe($routeParams.gridId, $scope.cell.pipe2.id);
+                    return;
+                }
+
+                $scope.dragging = false;
+            }
         },
 
 

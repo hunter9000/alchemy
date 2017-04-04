@@ -20,22 +20,14 @@ alchApp.factory('GridService', function(APIService, $rootScope) {
             'dir1': dir1,
             'dir2': dir2,
         }
-    }
+    };
+    var broadcastUpdateCallback = function() {
+        return function(response) {
+            $rootScope.$broadcast("grid.update", {'grid': response.data});
+        }
+    };
 
     return {
-//        getUnitPurchaseData: function(id) {
-//            return {
-//                'id': id
-//            }
-//        },
-//        getUnitPlacementData: function(id, row, col) {
-//            return {
-//                'id': id,
-//                'row': row,
-//                'col': col,
-//            }
-//        },
-
         purchaseUnit: function(gridId, unitId) {
             APIService.purchaseUnit(gridId, unitId, getUnitPurchaseData(unitId), function(response) {
                 // broadcast update response.data
@@ -69,6 +61,10 @@ alchApp.factory('GridService', function(APIService, $rootScope) {
                                  function(response) {
                                     $rootScope.$broadcast("grid.update", {'grid': response.data});
                                  });
+        },
+
+        removePipe: function(gridId, pipeId) {
+            APIService.removePipe(gridId, pipeId, broadcastUpdateCallback());
         },
     }
 });
