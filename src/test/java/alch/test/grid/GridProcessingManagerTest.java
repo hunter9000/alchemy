@@ -13,8 +13,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class GridProcessingManagerTest {
@@ -69,7 +70,7 @@ public class GridProcessingManagerTest {
         transmuterStockpilePipe.setInDirection(DirectionType.WEST);
         transmuterStockpilePipe.setOutDirection(DirectionType.SOUTH);
 
-        List<Pipe> pipes = new ArrayList<>();
+        Set<Pipe> pipes = new HashSet<>();
         pipes.add(sourceTransmuterPipe);
         pipes.add(transmuterStockpilePipe);
         grid.setPipes(pipes);

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/alch.iml" filepath="$PROJECT_DIR$/alch.iml" />
+      <module fileurl="file://C:\Users\hdavis\IdeaProjects\alch\alch.iml" filepath="C:\Users\hdavis\IdeaProjects\alch\alch.iml" />
     </modules>
   </component>
 </project>
