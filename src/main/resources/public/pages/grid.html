@@ -39,13 +39,13 @@
 
         <div class="col-md-3" style="border: 1px solid black;"
              data-drop="true"
-             data-jqyoui-options
+             data-jqyoui-options="{'scope': 'units'}"
              jqyoui-droppable="{'onDrop': 'drop()'}"
              ng-model="droppedUnit">
 
             Placeable units
 
-            <div ng-repeat="unit in grid.purchasedUnits | filter: {isPlaced: false}" >
+            <div ng-repeat="unit in grid.purchasedUnits | filter: {isPlaced: false} | orderBy: 'id'" >
                 <div class="cell-wrapper inline-block">
                     <unit unit="unit" />
                 </div>

@@ -2,6 +2,7 @@
 <div class="inline-block cell-wrapper bordered" ng-click="isCellEmpty() && clickEmpty()">
 
     <div style="top: -1px; position: absolute; left: -1px;">
+
         <unit unit="cell.unit" ng-show="cell.unit" />
 
         <div class="unit-wrapper">
@@ -19,7 +20,7 @@
         </div>
 
         <!-- PIPES -->
-        <div class="cell-wrapper inline-block" style="z-index: 20">
+        <div ng-show="!cell.unit">
             <!--<span class="unit-wrapper">empty</span>-->
 
             <div class="unit-wrapper">
@@ -46,17 +47,6 @@
             </div>
 
             <!-- right pipe connector -->
-            <!--<div class="unit-wrapper pipe-connector pipe-connector-right"-->
-                 <!--data-drop="true"-->
-                 <!--data-jqyoui-options="{'scope': 'pipes{{col}}{{row}}'}"-->
-                 <!--jqyoui-droppable="{'onDrop': 'pipeDrop()'}"-->
-
-                 <!--ng-model="rPipeDir"-->
-            <!--&gt;-->
-                <!--&lt;!&ndash;ng-model="getPipeAt('right')"&ndash;&gt;-->
-
-                <!--R-->
-            <!--</div>-->
             <div class="unit-wrapper pipe-connector pipe-connector-right"
                  data-drop="true"
                  data-jqyoui-options="{'scope': 'pipes{{col}}{{row}}'}"
@@ -74,9 +64,6 @@
             </div>
 
             <!-- top pipe connector -->
-            <!--<div class="unit-wrapper pipe-connector pipe-connector-top">-->
-                <!--T-->
-            <!--</div>-->
             <div class="unit-wrapper pipe-connector pipe-connector-top"
                  data-drop="true"
                  data-jqyoui-options="{'scope': 'pipes{{col}}{{row}}'}"
@@ -94,9 +81,6 @@
             </div>
 
             <!-- bottom pipe connector -->
-            <!--<div class="unit-wrapper pipe-connector pipe-connector-bottom">-->
-                <!--B-->
-            <!--</div>-->
             <div class="unit-wrapper pipe-connector pipe-connector-bottom"
                  data-drop="true"
                  data-jqyoui-options="{'scope': 'pipes{{col}}{{row}}'}"
