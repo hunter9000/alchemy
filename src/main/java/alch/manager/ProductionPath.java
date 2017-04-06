@@ -2,6 +2,8 @@ package alch.manager;
 
 import alch.graph.Graph;
 import alch.model.Unit;
+import alch.model.UnitType;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -36,5 +38,13 @@ public class ProductionPath {
     public void addPath(ProductionPath membershipPath) {
         graph.union(membershipPath.graph);
         this.sourceUnits.addAll(membershipPath.sourceUnits);
+    }
+
+    public Collection<Unit> getStockpiles() {
+        return CollectionUtils.select(this.graph.getAllPayloads(), unit -> { return unit.getType() == UnitType.STOCKPILE; });
+    }
+
+    public boolean isValid() {
+        return false;
     }
 }

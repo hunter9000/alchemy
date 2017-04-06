@@ -1,10 +1,13 @@
 package alch.manager;
 
 import alch.model.*;
+import org.apache.log4j.Logger;
 
 import java.util.*;
 
 public class GridProcessingManager {
+
+    private Logger logger = Logger.getLogger(this.getClass());
 
     private Grid grid;
     private List<ProductionPath> paths;
@@ -20,6 +23,8 @@ public class GridProcessingManager {
         this.unitPathMembership = new HashMap<>();
     }
 
+    /** Finds all the well connected paths through the grid.
+     *  @returns null if the grid doesn't have only well connected paths that include all placed units. */
     public List<ProductionPath> getPaths() {
         List<ProductionPath> paths = new ArrayList<>();
 
@@ -30,24 +35,33 @@ public class GridProcessingManager {
             if (source.getType() == UnitType.SOURCE && !allVisitedUnits.contains(source)) {   // if it's not in allVisitedUnits
                 // create Set<Unit> for this graph
                 Set<Unit> graphVisitedUnits = new HashSet<>();
-                // add this source to the set
-//                graphVisitedUnits.add(source);
 
                 ProductionPath path = new ProductionPath();
                 path.addSource(source);
+
                 // we know there's only one connection, and it's an output
                 visitNextUnit(source, null, path, graphVisitedUnits);
 
-                // do something useful with path here
+                // add the path to the list, and all the units it visited to the set of all the units that have been visited
                 paths.add(path);
-
                 allVisitedUnits.addAll(graphVisitedUnits);
             }
         }
 
         // all sources have been processed
         // make sure that all units have been visited
+        if (allVisitedUnits.size() != grid.getPlacedUnits().size()) {
+            logger.debug("not all units are connected");
+            return null;
+        }
+
         // make sure that all transmuters have all their inputs supplied
+        for (ProductionPath path : paths) {
+            if (!path.isValid()) {
+                logger.debug("path is invalid");
+                return null;
+            }
+        }
 
         return paths;
     }
@@ -72,7 +86,6 @@ public class GridProcessingManager {
 //                throw new RuntimeException("no connected neighbor found");
                 return path;
             }
-
 
             // neighborCell should be a unit now
 //            Cell neighborCell = neighborUnitInfo.cell;
