@@ -1,18 +1,20 @@
 package alch.graph;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.IteratorUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+/** This is a hacked together pile of crap. fix it */
 public class Graph<T> {
     Set<Node<T>> nodes;
-    Set<Edge<T>> edges;
+    Set<Edge<EdgeInfo>> edges;
 
     public Graph() {
-        nodes = new HashSet<Node<T>>();
+        nodes = new HashSet<>();
         edges = new HashSet<>();
     }
 
@@ -23,22 +25,16 @@ public class Graph<T> {
 
 
     public boolean contains(T firstUnit) {
-//        for (Node<T> node : nodes) {
-//            if (node.getPayload().equals(firstUnit)) {
-//                return true;
-//            }
-//        }
-//        return false;
         return nodes.contains(new Node(firstUnit));
     }
 
-    public void addLink(T firstUnit, T secondUnit) {
-        Node<T> firstNode = new Node(firstUnit);
+    public void addLink(EdgeInfo firstEdgeInfo, EdgeInfo secondEdgeInfo) {
+        Node<T> firstNode = new Node(firstEdgeInfo.unit);
         nodes.add(firstNode);
-        Node<T> secondNode = new Node(secondUnit);
+        Node<T> secondNode = new Node(secondEdgeInfo.unit);
         nodes.add(secondNode);
 
-        edges.add(new Edge(firstNode, secondNode));
+        edges.add(new Edge(firstEdgeInfo, secondEdgeInfo));
     }
 
     public Collection<T> getAllPayloads() {
@@ -51,5 +47,19 @@ public class Graph<T> {
     public void union(Graph otherGraph) {
         this.nodes.addAll(otherGraph.nodes);
         this.edges.addAll(otherGraph.edges);
+    }
+
+    /** Gets the edge that matches the payload objects given. */
+    public Edge<EdgeInfo> getEdge(T first, T second) {
+        return IteratorUtils.find(edges.iterator(), (Edge edge) -> edge.getSide1().node.getPayload().equals(first)
+                                                                && edge.getSide2().node.getPayload().equals(second) );
+    }
+
+    public Collection<Edge<EdgeInfo>> getStartingEdges(T payload) {
+        return CollectionUtils.select(edges, edge -> { return edge.getSide1().node.getPayload().equals(payload); } );
+    }
+
+    public Collection<Edge<EdgeInfo>> getEndingEdges(T payload) {
+        return CollectionUtils.select(edges, edge -> { return edge.getSide2().node.getPayload().equals(payload); } );
     }
 }

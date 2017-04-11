@@ -1,6 +1,9 @@
 package alch.manager;
 
 import alch.model.*;
+import alch.response.CellError;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.log4j.Logger;
 
 import java.util.*;
@@ -12,15 +15,19 @@ public class GridProcessingManager {
     private Grid grid;
     private List<ProductionPath> paths;
 
-    private List<Cell> errorCells;
+    private List<CellError> cellErrors;
     private Map<Unit, ProductionPath> unitPathMembership;
 
     public GridProcessingManager(Grid grid) {
         this.grid = grid;
         this.paths = new ArrayList<>();
 
-        this.errorCells = new ArrayList<>();
+        this.cellErrors = new ArrayList<>();
         this.unitPathMembership = new HashMap<>();
+    }
+
+    public List<CellError> getCellErrors() {
+        return cellErrors;
     }
 
     /** Finds all the well connected paths through the grid.
@@ -52,13 +59,19 @@ public class GridProcessingManager {
         // make sure that all units have been visited
         if (allVisitedUnits.size() != grid.getPlacedUnits().size()) {
             logger.debug("not all units are connected");
+            Collection<Unit> orphans = CollectionUtils.disjunction(allVisitedUnits, grid.getPlacedUnits());
+            for (Unit u : orphans) {
+                addError(u.getRow(), u.getCol(), "Not connected");
+            }
             return null;
         }
 
         // make sure that all transmuters have all their inputs supplied
         for (ProductionPath path : paths) {
-            if (!path.isValid()) {
+            Collection<CellError> errors = path.isValid();
+            if (!errors.isEmpty()) {
                 logger.debug("path is invalid");
+                this.cellErrors.addAll(errors);
                 return null;
             }
         }
@@ -70,6 +83,7 @@ public class GridProcessingManager {
     private ProductionPath visitNextUnit(Unit currUnit, DirectionType entryDir, ProductionPath path, Set<Unit> graphVisitedUnits) {
         if (graphVisitedUnits.contains(currUnit)) {
             // error, this contains a cycle
+            addError(currUnit.getRow(), currUnit.getCol(), "Connected in a cycle");
             return path;
         }
         graphVisitedUnits.add(currUnit);
@@ -84,12 +98,12 @@ public class GridProcessingManager {
             UnitConnectionInfo neighborUnitInfo = getConnectedNeighborCell(currUnit.getRow(), currUnit.getCol(), outputConnection.getDirectionType());
             if (neighborUnitInfo == null) {
 //                throw new RuntimeException("no connected neighbor found");
+//                addError(currUnit.getRow(), currUnit.getCol(), "");
+                // don't add an error here, getConnectedNeighborCell adds errors when it doesn't connect
                 return path;
             }
 
             // neighborCell should be a unit now
-//            Cell neighborCell = neighborUnitInfo.cell;
-//            if (neighborCell.isUnit()) {
             Unit nextUnit = neighborUnitInfo.unit;
             UnitConnection inputConnection = neighborUnitInfo.getInputUnitConnection();      // this is the outputConnection that
 
@@ -97,6 +111,7 @@ public class GridProcessingManager {
             // does the output of currUnit from the entryDir match the input of the u unit at neighborUnitInfo.entryDir?
             if (outputConnection.getResourceType() != inputConnection.getResourceType()) {
                 // add to error list and return null;
+                addError(currUnit.getRow(), currUnit.getCol(), "Output and Input types don't match");
                 return null;
             }
 
@@ -106,10 +121,8 @@ public class GridProcessingManager {
             if (membershipPath == null) {
                 // if not part of another path, add this unit to visited units, and add it to the path
                 unitPathMembership.put(nextUnit, path);
-                // add the unit to graphVisitedUnits
-//                graphVisitedUnits.add(nextUnit);
 
-                path.linkUnit(currUnit, nextUnit);
+                path.linkUnit(currUnit, outputConnection, nextUnit, inputConnection);
 
                 // recurse
                 return visitNextUnit(nextUnit, neighborUnitInfo.entryDirection, path, graphVisitedUnits);
@@ -127,6 +140,8 @@ public class GridProcessingManager {
             }
             else if (membershipPath == path) {
                 // this is a cycle, not allowed, add error
+                addError(currUnit.getRow(), currUnit.getCol(), "Connected in a cycle");
+                return path;
             }
         }
 
@@ -136,60 +151,60 @@ public class GridProcessingManager {
 
     }
 
-    private UnitConnectionInfo getConnectedNeighborCell(Integer row, Integer col, DirectionType entryDir) {
+    private UnitConnectionInfo getConnectedNeighborCell(final Integer row, final Integer col, DirectionType entryDir) {
+        int neighborRow = row;
+        int neighborCol = col;
+
         if (entryDir == DirectionType.EAST) {
-            col++;
+            neighborCol++;
         }
         if (entryDir == DirectionType.NORTH) {
-            row--;
+            neighborRow--;
         }
         if (entryDir == DirectionType.SOUTH) {
-            row++;
+            neighborRow++;
         }
         if (entryDir == DirectionType.WEST) {
-            col--;
+            neighborCol--;
         }
-        if (!isInBounds(row, col)) {
+        if (!isInBounds(neighborRow, neighborCol)) {
+            addError(row, col, "Ran out of bounds");
             return null;
         }
 
-        Cell neighborCell = grid.getCells()[row][col];
+        Cell neighborCell = grid.getCells()[neighborRow][neighborCol];
         if (neighborCell.isUnit()) {
             UnitConnectionInfo ret = new UnitConnectionInfo();
             ret.unit = neighborCell.unit;
             ret.entryDirection = entryDir;
             return ret;
         }
-        else if (neighborCell.isPipe()) {
-            Pipe connectedPipe = null;
-            for (Pipe pipe : neighborCell.getAllPipes()) {
-                if (pipe.getInDirection().opposite() == entryDir) {     // connection is good
-                    connectedPipe = pipe;
-                    break;
-                }
-            }
+        else /*if (neighborCell.isPipe())*/ {
+            Pipe connectedPipe = IterableUtils.find(neighborCell.getAllPipes(), (Pipe pipe) -> pipe.getInDirection().opposite() == entryDir );
+
+//            for (Pipe pipe : neighborCell.getAllPipes()) {
+//                if (pipe.getInDirection().opposite() == entryDir) {     // connection is good
+//                    connectedPipe = pipe;
+//                    break;
+//                }
+//            }
             if (connectedPipe == null) {
                 // error, no pipe connected to this one, add this cell to the errors and return null
+                addError(row, col, "Pipe ends with no connection");
                 return null;
             }
 
-//            DirectionType leavingDirection = ();
-//            if (neighborCell.pipe1 != null && neighborCell.pipe1.outputDirectionFromInputDirection(entryDir) != null) {
-//                leavingDirection = neighborCell.pipe1.outputDirectionFromInputDirection(entryDir);
-//            }
-//            else if (neighborCell.pipe2 != null && neighborCell.pipe2.outputDirectionFromInputDirection(entryDir) != null) {
-//                leavingDirection = neighborCell.pipe2.outputDirectionFromInputDirection(entryDir);
-//            }
-////                neighborCell = getConnectedNeighborCell(neighborCell.pipe, );
-//            if (leavingDirection == null) {
-//                return null;
-//            }
-            return getConnectedNeighborCell(row, col, connectedPipe.getOutDirection());
+            return getConnectedNeighborCell(neighborRow, neighborCol, connectedPipe.getOutDirection());
         }
-        else {
-            // error, no pipe connected to this one, add this cell to the errors and return null
-            return null;
-        }
+//        else {
+//            // error, no pipe connected to this one, add this cell to the errors and return null
+//            addError(row, col, "Pipe ends with no connection");
+//            return null;
+//        }
+    }
+
+    private void addError(Integer row, Integer col, String s) {
+        this.cellErrors.add(new CellError(row, col, s));
     }
 
     private boolean isInBounds(Integer row, Integer col) {

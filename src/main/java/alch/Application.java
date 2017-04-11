@@ -23,6 +23,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class Application extends WebMvcConfigurerAdapter {
 
+    //https://sdqali.in/blog/2016/07/13/jwt-authentication-with-spring-web---part-5/
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }

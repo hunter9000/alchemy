@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 
-public class GridProcessingManagerTest {
+public class GridWellConnectedTest {
 
     Grid grid;
 
@@ -82,5 +82,7 @@ public class GridProcessingManagerTest {
         List<ProductionPath> paths = manager.getPaths();
 
         Assert.assertNotNull(paths);
+        Assert.assertTrue(manager.getCellErrors().isEmpty());
+        Assert.assertTrue(paths.size() == 1);
     }
 }

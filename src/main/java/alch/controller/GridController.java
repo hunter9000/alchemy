@@ -130,17 +130,6 @@ public class GridController {
     public Grid removePipe(@PathVariable Long gridId, @PathVariable Long pipeId) {
         Grid grid = gridRepository.findOne(gridId);
 
-//        new GridManager(grid).populateGrid();
-
-        // find and delete the existing pipes that are already in the directions specified
-//        Cell cell = grid.getCells()[pipePlaceRequest.getRow()][pipePlaceRequest.getCol()];
-
-//        if (PipeUtils.isPerfectMatch(cell.pipe1, pipePlaceRequest)) {
-//            grid.getPipes().remove(cell.pipe1);
-//        }
-//        else if (PipeUtils.isPerfectMatch(cell.pipe2, pipePlaceRequest)) {
-//            grid.getPipes().remove(cell.pipe2);
-//        }
         CollectionUtils.filterInverse(grid.getPipes(), pipe -> { return pipe.getId().equals(pipeId); } );
 
         gridRepository.save(grid);
@@ -148,32 +137,10 @@ public class GridController {
         return grid;
     }
 
-//    /** Get all the purchasables that this grid has either available, or hinted at. */
-//    @RequestMapping(value = "/api/grid/{gridId}/store/", method = RequestMethod.GET)
-//    public List<Unit> getPurchasableUnits(@PathVariable Long gridId) {
-//        Grid grid = gridRepository.findOne(gridId);
-//
-//        List<PurchasableUnit> units = store.getAllPurchasableUnits();
-//        List<PurchasableUnit> retList = new ArrayList<>();
-//
-//        for (PurchasableUnit purchasable : units) {
-//            for (PurchasedUnit purchased : grid.getPurchasedUnits()) {
-//                if (purchased.getPurchasableUnitType().equals(purchasable.getPurchasableUnitType())) {
-//                    continue;       // don't add it to the list if already purchased
-//                }
-//            }
-//            // if it isn't close enough to being affordable, don't add it
-//            ResourceInventory inventory = grid.getResourceInventory().get(purchasable.getCostResourceType());
-//            // if player has 75% of the cost, show it in the list
-//            if (inventory.getAmount() >= purchasable.getCostAmount() * .75) {
-//                retList.add(purchasable);
-//
-//            }
-//        }
-//
-//
-//
-//        return units;
-//    }
+    @RequestMapping(value = "/api/grid/{gridId}/time/", method = RequestMethod.PUT)
+    public Grid startProduction() {
+
+        return null;
+    }
 
 }

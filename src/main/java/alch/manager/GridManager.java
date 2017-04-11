@@ -33,18 +33,19 @@ public class GridManager {
 
         Set<Unit> units = new HashSet<>();
         // sources
-        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_WOOD, 10, ResourceType.WOOD, new UnitConnection(ResourceType.WOOD, DirectionType.EAST, false) ));
-        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_DIRT,10, ResourceType.WOOD, new UnitConnection(ResourceType.DIRT, DirectionType.EAST, false) ));
-        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_GRASS,10, ResourceType.WOOD,  new UnitConnection(ResourceType.GRASS, DirectionType.EAST, false) ));
-        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_ROCK,10, ResourceType.WOOD,  new UnitConnection(ResourceType.ROCK, DirectionType.EAST, false) ));
-        units.add(createUnit(grid, UnitType.SOURCE, UnitDefinitionType.SOURCE_WATER,10, ResourceType.WOOD,  new UnitConnection(ResourceType.WATER, DirectionType.EAST, false) ));
+        units.add(createUnit(grid, UnitDefinitionType.SOURCE_WOOD ));
+        units.add(createUnit(grid, UnitDefinitionType.SOURCE_DIRT ));
+        units.add(createUnit(grid, UnitDefinitionType.SOURCE_GRASS ));
+        units.add(createUnit(grid, UnitDefinitionType.SOURCE_ROCK ));
+        units.add(createUnit(grid, UnitDefinitionType.SOURCE_WATER ));
         // transmuters
-        units.add(createUnit(grid, UnitType.TRANSMUTER, UnitDefinitionType.TRANSMUTER_WOOD_DIRT,0, ResourceType.WOOD, new UnitConnection(ResourceType.WOOD, DirectionType.WEST, true),
-                                                                                                                                  new UnitConnection(ResourceType.DIRT, DirectionType.EAST, false)));
+        units.add(createUnit(grid, UnitDefinitionType.TRANSMUTER_WOOD_DIRT));
+        // dual transumters
+        units.add(createUnit(grid, UnitDefinitionType.DUAL_TRANSMUTER_WOOD_DIRT_GRASS));
         // stockpiles
-        units.add(createUnit(grid, UnitType.STOCKPILE, UnitDefinitionType.STOCKPILE_WOOD,0, ResourceType.WOOD, new UnitConnection(ResourceType.WOOD, DirectionType.NORTH, true)));
-        units.add(createUnit(grid, UnitType.STOCKPILE, UnitDefinitionType.STOCKPILE_DIRT,50, ResourceType.WOOD, new UnitConnection(ResourceType.DIRT, DirectionType.NORTH, true)));
-        units.add(createUnit(grid, UnitType.STOCKPILE, UnitDefinitionType.STOCKPILE_GRASS,100, ResourceType.WOOD, new UnitConnection(ResourceType.GRASS, DirectionType.NORTH, true)));
+        units.add(createUnit(grid, UnitDefinitionType.STOCKPILE_WOOD));
+        units.add(createUnit(grid, UnitDefinitionType.STOCKPILE_DIRT));
+        units.add(createUnit(grid, UnitDefinitionType.STOCKPILE_GRASS));
 
         grid.setUnits(units);
 
@@ -56,16 +57,14 @@ public class GridManager {
         return grid;
     }
 
-    public static Unit createUnit(Grid grid, UnitType unitType, UnitDefinitionType unitDefinitionType, Integer costAmount, ResourceType costResourceType, UnitConnection... unitConnections) {
+    public static Unit createUnit(Grid grid, UnitDefinitionType unitDefinitionType) {
         Unit unit = new Unit();
         unit.setGrid(grid);
-        unit.setType(unitType);
         unit.setDefinitionType(unitDefinitionType);
-        unit.setCostAmount(costAmount);
-        unit.setCostResourceType(costResourceType);
-//        unit.setResourceInputType(resourceInputType);
-//        unit.setResourceOutputType(resourceOutputType);
-        unit.setConnections(Arrays.asList(unitConnections));
+        unit.setType(unitDefinitionType.getUnitType());
+        unit.setCostAmount(unitDefinitionType.getCostAmount());
+        unit.setCostResourceType(unitDefinitionType.getCostResourceType());
+        unit.setConnections(unitDefinitionType.getUnitConnections());
         return unit;
     }
 

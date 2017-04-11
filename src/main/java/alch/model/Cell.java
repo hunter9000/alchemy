@@ -3,8 +3,8 @@ package alch.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Cell {
     @JsonProperty
@@ -25,8 +25,15 @@ public class Cell {
         return unit != null;
     }
 
-    public List<Pipe> getAllPipes() {
-        return Arrays.asList(pipe1, pipe2);
+    public Collection<Pipe> getAllPipes() {
+        Collection<Pipe> pipes = new ArrayList<>();
+        if (pipe1 != null) {
+            pipes.add(pipe1);
+        }
+        if (pipe2 != null) {
+            pipes.add(pipe2);
+        }
+        return pipes;
     }
 
     public Unit getUnit() {

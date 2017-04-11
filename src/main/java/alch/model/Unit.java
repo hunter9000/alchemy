@@ -83,6 +83,11 @@ public class Unit {
     public Collection<UnitConnection> getOutputConnections() {
         return CollectionUtils.select(getConnections(), (UnitConnection unitConnection) ->  !unitConnection.getInput() );
     }
+    @Transient
+    @JsonIgnore
+    public Collection<UnitConnection> getInputConnections() {
+        return CollectionUtils.select(getConnections(), (UnitConnection unitConnection) ->  unitConnection.getInput() );
+    }
 
     public Long getId() {
         return id;
