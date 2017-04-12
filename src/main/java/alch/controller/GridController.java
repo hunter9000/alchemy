@@ -1,19 +1,26 @@
 package alch.controller;
 
 import alch.manager.GridManager;
+import alch.manager.GridProcessingManager;
+import alch.manager.ProductionPath;
 import alch.model.*;
 import alch.model.user.User;
 import alch.repository.GridRepository;
 import alch.request.PipePlaceRequest;
 import alch.request.UnitRequest;
+import alch.response.TimerStartResponse;
 import alch.security.BadRequestException;
 import alch.util.AuthUtils;
 import alch.util.PipeUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.Instant;
+import java.util.List;
 
 @RestController
 public class GridController {
@@ -137,10 +144,34 @@ public class GridController {
         return grid;
     }
 
-    @RequestMapping(value = "/api/grid/{gridId}/time/", method = RequestMethod.PUT)
-    public Grid startProduction() {
+    @RequestMapping(value = "/api/grid/{gridId}/timer/", method = RequestMethod.POST)
+    public ResponseEntity<TimerStartResponse> startProduction(@PathVariable Long gridId) {
+        Grid grid = gridRepository.findOne(gridId);
 
-        return null;
+        // if the timer is already running,
+        if (grid.getLastTick() != null) {
+            throw new BadRequestException();
+        }
+
+        TimerStartResponse response = new TimerStartResponse();
+
+        new GridManager(grid).populateGrid();
+        GridProcessingManager manager = new GridProcessingManager(grid);
+        List<ProductionPath> paths = manager.getPaths();
+
+        if (manager.hasErrors()) {
+            response.setCellErrors(manager.getCellErrors());
+
+            // if errors in grid, return error with error messages
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        else {
+            grid.setLastTick(Instant.now());
+
+            gridRepository.save(grid);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
     }
 
 }

@@ -1,8 +1,4 @@
 
-
-<!--{{grid}}-->
-
-
 <!--
 {
     "id":1,
@@ -35,8 +31,6 @@
     {"id":12,"col":null,"row":null,"type":"STOCKPILE","resourceOutputType":null,"resourceInputType":null,"purchased":true,"costAmount":0,"costResourceType":{"displayName":"Wood"},"canAfford":false,"isPlaced":false}
 -->
         <!-- PLACAEABLE UNITS -->
-        <!--<div class="col-md-3" >-->
-
         <div class="col-md-3" style="border: 1px solid black;"
              data-drop="true"
              data-jqyoui-options="{'scope': 'units'}"
@@ -71,6 +65,9 @@
 
 
 <button clas="btn btn-secondary" ng-click="delete()">delete</button>
+<button clas="btn btn-secondary" ng-click="start()">start</button>
+
+{{errors}}
 
 <!--&lt;!&ndash; drag &ndash;&gt;-->
 <!--<div class="btn btn-primary"-->

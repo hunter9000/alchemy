@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.collections4.CollectionUtils;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -44,14 +45,14 @@ public class Grid {
     @OneToMany(mappedBy = "grid", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Pipe> pipes;
 
-//    @OneToMany(mappedBy = "grid", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    private List<PurchasedUnit> purchasedUnits;
-
     @Column(name = "width", nullable = false)
     private Integer width;
 
     @Column(name = "height", nullable = false)
     private Integer height;
+
+    @Column(name = "last_tick")
+    private Instant lastTick = null;
 
     @Transient
     private Cell[][] cells;
@@ -61,8 +62,6 @@ public class Grid {
     public Collection<Unit> getPlacedUnits() {
         return CollectionUtils.select(units, unit -> { return unit.isPlaced(); });
     }
-
-    // entity bucket for purchased, but unused ones?	// no, just clear the x,y
 
 
     public Long getId() {
@@ -114,13 +113,6 @@ public class Grid {
         this.pipes = pipes;
     }
 
-//    public List<PurchasedUnit> getPurchasedUnits() {
-//        return purchasedUnits;
-//    }
-//    public void setPurchasedUnits(List<PurchasedUnit> purchasedUnits) {
-//        this.purchasedUnits = purchasedUnits;
-//    }
-
     public Integer getWidth() {
         return width;
     }
@@ -133,6 +125,13 @@ public class Grid {
     }
     public void setHeight(Integer height) {
         this.height = height;
+    }
+
+    public Instant getLastTick() {
+        return lastTick;
+    }
+    public void setLastTick(Instant lastTick) {
+        this.lastTick = lastTick;
     }
 
     public Cell[][] getCells() {

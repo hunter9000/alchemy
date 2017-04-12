@@ -28,11 +28,14 @@ alchApp.factory('APIService', function($window, $location, $http, $log) {
         $http.get(uri, getHeaders())
         .then(getSuccessCallbackWrapper(successCallback, 'GET', uri), getStandardFailureCallback());
     };
-    var post = function(uri, data, successCallback) {
+    var post = function(uri, data, successCallback, failureCallback) {
         $log.debug('POST: ' + uri + ' DATA:');
         $log.debug(data);
+        if (!failureCallback) {
+            failureCallback = getStandardFailureCallback();
+        }
         return $http.post(uri, data, getHeaders())
-        .then(getSuccessCallbackWrapper(successCallback, 'POST', uri, data), getStandardFailureCallback());
+        .then(getSuccessCallbackWrapper(successCallback, 'POST', uri, data), failureCallback);
     };
     var put = function(uri, data, successCallback) {
         $log.debug('PUT: ' + uri + ' DATA:');
@@ -106,6 +109,11 @@ alchApp.factory('APIService', function($window, $location, $http, $log) {
         removePipe(gridId, pipeId, successCallback) {
             deleteCall('/api/grid/'+gridId+'/pipes/'+pipeId+'/', successCallback);
         },
+
+        startGrid(gridId, successCallback, failureCallback) {
+            post('/api/grid/'+gridId+'/timer/', {}, successCallback, failureCallback);
+        },
+
 
     };
 });

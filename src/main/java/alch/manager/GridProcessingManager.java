@@ -30,6 +30,10 @@ public class GridProcessingManager {
         return cellErrors;
     }
 
+    public boolean hasErrors() {
+        return !this.cellErrors.isEmpty();
+    }
+
     /** Finds all the well connected paths through the grid.
      *  @returns null if the grid doesn't have only well connected paths that include all placed units. */
     public List<ProductionPath> getPaths() {

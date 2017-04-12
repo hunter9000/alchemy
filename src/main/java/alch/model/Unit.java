@@ -31,6 +31,7 @@ public class Unit {
     @Column(name = "row")
     private Integer row;
 
+    // TODO DON'T NEED THIS, GET IT FROM THE DEFINITIONTYPE
     @Column(name = "type", nullable = false, updatable = false)
     @Enumerated(EnumType.STRING)
     private UnitType type;
@@ -47,15 +48,17 @@ public class Unit {
 //    @Enumerated(EnumType.STRING)
 //    private ResourceType resourceInputType;  // optional, for if this is a transmuter
 
-    @OneToMany(mappedBy = "unit")
-    List<UnitConnection> connections;
+//    @OneToMany(mappedBy = "unit")
+//    List<UnitConnection> connections;
 
     @Column(name = "purchased", nullable = false)
     private Boolean purchased = false;
 
+    // TODO don't need these cost vars, get them from the definition type
     @Column(name = "cost_amount", nullable = false, updatable = false)
     private Integer costAmount;
 
+    // TODO don't need these cost vars, get them from the definition type
     @Column(name = "cost_resource_type", updatable = false)
     @Enumerated(EnumType.STRING)
     private ResourceType costResourceType;
@@ -145,13 +148,13 @@ public class Unit {
 //        this.resourceInputType = resourceInputType;
 //    }
 
-
+    @JsonProperty(value = "connections")
     public List<UnitConnection> getConnections() {
-        return connections;
+        return definitionType.getUnitConnections();
     }
-    public void setConnections(List<UnitConnection> connections) {
-        this.connections = connections;
-    }
+//    public void setConnections(List<UnitConnection> connections) {
+////        this.connections = connections;
+//    }
 
     public Boolean getPurchased() {
         return purchased;

@@ -37,4 +37,14 @@ alchApp.controller('gridController', function(APIService, GridService, $scope, $
         });
     }
 
+    $scope.start = function() {
+        APIService.startGrid($routeParams.gridId,
+        function(response) {        // success
+            $scope.errors = 'no errors';
+        },
+        function(response) {        // failure
+            $scope.errors = response.data.cellErrors;
+        });
+    }
+
 })
