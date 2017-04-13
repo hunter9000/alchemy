@@ -62,9 +62,9 @@ public class GridManager {
         unit.setGrid(grid);
         unit.setDefinitionType(unitDefinitionType);
         // TODO don't set these here, unit should use the definition only
-        unit.setType(unitDefinitionType.getUnitType());
-        unit.setCostAmount(unitDefinitionType.getCostAmount());
-        unit.setCostResourceType(unitDefinitionType.getCostResourceType());
+//        unit.setType(unitDefinitionType.getUnitType());
+//        unit.setCostAmount(unitDefinitionType.getCostAmount());
+//        unit.setCostResourceType(unitDefinitionType.getCostResourceType());
 //        List<UnitConnection> connections = new ArrayList<>();
 //        for (UnitConnection conn : unitDefinitionType.getUnitConnections()) {
 //

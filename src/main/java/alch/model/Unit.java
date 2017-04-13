@@ -32,9 +32,9 @@ public class Unit {
     private Integer row;
 
     // TODO DON'T NEED THIS, GET IT FROM THE DEFINITIONTYPE
-    @Column(name = "type", nullable = false, updatable = false)
-    @Enumerated(EnumType.STRING)
-    private UnitType type;
+//    @Column(name = "type", nullable = false, updatable = false)
+//    @Enumerated(EnumType.STRING)
+//    private UnitType type;
 
     @Column(name = "definition_type", nullable = false, updatable = false)
     @Enumerated(EnumType.STRING)
@@ -54,14 +54,14 @@ public class Unit {
     @Column(name = "purchased", nullable = false)
     private Boolean purchased = false;
 
-    // TODO don't need these cost vars, get them from the definition type
-    @Column(name = "cost_amount", nullable = false, updatable = false)
-    private Integer costAmount;
-
-    // TODO don't need these cost vars, get them from the definition type
-    @Column(name = "cost_resource_type", updatable = false)
-    @Enumerated(EnumType.STRING)
-    private ResourceType costResourceType;
+//    // TODO don't need these cost vars, get them from the definition type
+//    @Column(name = "cost_amount", nullable = false, updatable = false)
+//    private Integer costAmount;
+//
+//    // TODO don't need these cost vars, get them from the definition type
+//    @Column(name = "cost_resource_type", updatable = false)
+//    @Enumerated(EnumType.STRING)
+//    private ResourceType costResourceType;
 
 //	? rotation
 
@@ -113,13 +113,6 @@ public class Unit {
         this.row = row;
     }
 
-    public UnitType getType() {
-        return type;
-    }
-    public void setType(UnitType type) {
-        this.type = type;
-    }
-
     public UnitDefinitionType getDefinitionType() {
         return definitionType;
     }
@@ -133,6 +126,14 @@ public class Unit {
     public void setGrid(Grid grid) {
         this.grid = grid;
     }
+
+    public Boolean getPurchased() {
+        return purchased;
+    }
+    public void setPurchased(Boolean purchased) {
+        this.purchased = purchased;
+    }
+
 
 //    public ResourceType getResourceOutputType() {
 //        return resourceOutputType;
@@ -148,33 +149,24 @@ public class Unit {
 //        this.resourceInputType = resourceInputType;
 //    }
 
+    @JsonProperty(value = "type")
+    public UnitType getType() {
+        return definitionType.getUnitType();
+    }
+
     @JsonProperty(value = "connections")
     public List<UnitConnection> getConnections() {
         return definitionType.getUnitConnections();
     }
-//    public void setConnections(List<UnitConnection> connections) {
-////        this.connections = connections;
-//    }
 
-    public Boolean getPurchased() {
-        return purchased;
-    }
-    public void setPurchased(Boolean purchased) {
-        this.purchased = purchased;
-    }
-
+    @JsonProperty(value = "costAmount")
     public Integer getCostAmount() {
-        return costAmount;
-    }
-    public void setCostAmount(Integer costAmount) {
-        this.costAmount = costAmount;
+        return definitionType.getCostAmount();
     }
 
+    @JsonProperty(value = "costResourceType")
     public ResourceType getCostResourceType() {
-        return costResourceType;
-    }
-    public void setCostResourceType(ResourceType costResourceType) {
-        this.costResourceType = costResourceType;
+        return definitionType.getCostResourceType();
     }
 
     @Override
@@ -188,7 +180,7 @@ public class Unit {
 //        }
         return Objects.equals(this.col, other.col)
                 && Objects.equals(this.row, other.row)
-                && Objects.equals(this.type, other.type)
+//                && Objects.equals(this.type, other.type)
                 && Objects.equals(this.definitionType, other.definitionType);
     }
 
