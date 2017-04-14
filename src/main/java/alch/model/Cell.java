@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class Cell {
     @JsonProperty
@@ -24,6 +25,9 @@ public class Cell {
     public boolean isUnit() {
         return unit != null;
     }
+
+    @JsonProperty
+    public List<String> errorMessages = new ArrayList<>();
 
     public Collection<Pipe> getAllPipes() {
         Collection<Pipe> pipes = new ArrayList<>();
@@ -55,5 +59,16 @@ public class Cell {
     }
     public void setPipe2(Pipe pipe2) {
         this.pipe2 = pipe2;
+    }
+
+    public List<String> getErrorMessages() {
+        return errorMessages;
+    }
+    public void setErrorMessages(List<String> errorMessages) {
+        this.errorMessages = errorMessages;
+    }
+
+    public void addMessage(String errorMessage) {
+        this.errorMessages.add(errorMessage);
     }
 }

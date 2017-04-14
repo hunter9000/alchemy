@@ -21,50 +21,45 @@ alchApp.factory('GridService', function(APIService, $rootScope) {
             'dir2': dir2,
         }
     };
-    var broadcastUpdateCallback = function() {
+    var broadcastGridUpdateCallback = function() {
         return function(response) {
-            $rootScope.$broadcast("grid.update", {'grid': response.data});
+            $rootScope.$broadcast('grid.update', {'grid': response.data});
         }
     };
+//    var broadcastErrorsCallback = function() {
+//        return function(response) {
+//            $rootScope.$broadcast('grid.errors', {'grid': response.data.grid, 'errors': response.data.cellErrors});
+//        }
+//    };
 
     return {
         purchaseUnit: function(gridId, unitId) {
-            APIService.purchaseUnit(gridId, unitId, getUnitPurchaseData(unitId), function(response) {
-                // broadcast update response.data
-                $rootScope.$broadcast("grid.update", {'grid': response.data});
-            })
+            APIService.purchaseUnit(gridId, unitId, getUnitPurchaseData(unitId), broadcastGridUpdateCallback());
         },
 
         unplaceUnit: function(gridId, unitId) {
             APIService.placeUnit(gridId,
                                    unitId,
                                    getUnitPlacementData(unitId, null, null),
-                                   function(response) {
-                                      $rootScope.$broadcast("grid.update", {'grid': response.data});
-                                   });
+                                   broadcastGridUpdateCallback());
         },
 
         placeUnit: function(gridId, unitId, row, col) {
             APIService.placeUnit(gridId,
                                  unitId,
                                  getUnitPlacementData(unitId, row, col),
-                                 function(response) {
-                                    $rootScope.$broadcast("grid.update", {'grid': response.data});
-                                 });
+                                 broadcastGridUpdateCallback());
         },
 
         placePipe: function(gridId, row, col, dir1, dir2) {
             getPipePlacementData(row, col, dir1, dir2);
 
-            APIService.placePipe(gridId,
-                                 getPipePlacementData(row, col, dir1, dir2),
-                                 function(response) {
-                                    $rootScope.$broadcast("grid.update", {'grid': response.data});
-                                 });
+            APIService.placePipe(gridId, getPipePlacementData(row, col, dir1, dir2), broadcastGridUpdateCallback());
         },
 
         removePipe: function(gridId, pipeId) {
-            APIService.removePipe(gridId, pipeId, broadcastUpdateCallback());
+            APIService.removePipe(gridId, pipeId, broadcastGridUpdateCallback());
         },
+
     }
 });

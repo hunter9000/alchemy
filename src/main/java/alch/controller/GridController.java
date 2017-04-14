@@ -8,17 +8,16 @@ import alch.model.user.User;
 import alch.repository.GridRepository;
 import alch.request.PipePlaceRequest;
 import alch.request.UnitRequest;
-import alch.response.TimerStartResponse;
+import alch.response.CellError;
 import alch.security.BadRequestException;
 import alch.util.AuthUtils;
 import alch.util.PipeUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -145,7 +144,7 @@ public class GridController {
     }
 
     @RequestMapping(value = "/api/grid/{gridId}/timer/", method = RequestMethod.POST)
-    public ResponseEntity<TimerStartResponse> startProduction(@PathVariable Long gridId) {
+    public Grid startProduction(@PathVariable Long gridId) {
         Grid grid = gridRepository.findOne(gridId);
 
         // if the timer is already running,
@@ -153,25 +152,38 @@ public class GridController {
             throw new BadRequestException();
         }
 
-        TimerStartResponse response = new TimerStartResponse();
-
         new GridManager(grid).populateGrid();
         GridProcessingManager manager = new GridProcessingManager(grid);
         List<ProductionPath> paths = manager.getPaths();
 
         if (manager.hasErrors()) {
-            response.setCellErrors(manager.getCellErrors());
-
-            // if errors in grid, return error with error messages
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            for (CellError error : manager.getCellErrors()) {
+                grid.getCells()[error.row][error.col].addMessage(error.errorMessage);
+            }
         }
         else {
-            grid.setLastTick(LocalDateTime.now());
-
+            grid.setLastTick(Timestamp.valueOf(LocalDateTime.now()));
             gridRepository.save(grid);
-
-            return new ResponseEntity<>(response, HttpStatus.OK);
         }
+        return grid;
+    }
+
+    @RequestMapping(value = "/api/grid/{gridId}/timer/", method = RequestMethod.DELETE)
+    public Grid stopProduction(@PathVariable Long gridId) {
+        Grid grid = gridRepository.findOne(gridId);
+
+        // if the timer is already running,
+        if (grid.getLastTick() == null) {
+            throw new BadRequestException();
+        }
+
+        // process ticks one last time
+
+
+        grid.setLastTick(null);
+        gridRepository.save(grid);
+        new GridManager(grid).populateGrid();
+        return grid;
     }
 
 }

@@ -5,9 +5,11 @@
 
         <unit unit="cell.unit" ng-show="cell.unit" />
 
-        <div class="unit-wrapper">
-            <span ng-show="cell.pipe1">pipe1</span>
-            <span ng-show="cell.pipe2">pipe2</span>
+        <div class="unit-wrapper" style="background-color: indianred;" ng-show="cell.errorMessages.length > 0">
+            <!--<span ng-show="cell.pipe1">pipe1</span>-->
+            <!--<span ng-show="cell.pipe2">pipe2</span>-->
+            {{cell.errorMessages}}
+
         </div>
 
         <!-- drop target for units -->
@@ -24,8 +26,13 @@
             <!--<span class="unit-wrapper">empty</span>-->
 
             <div class="unit-wrapper">
-                <span ng-show="cell.pipe1">pipe1 {{cell.pipe1.inDirection}} {{cell.pipe1.outDirection}}</span>
-                <span ng-show="cell.pipe2">pipe2 {{cell.pipe2.inDirection}} {{cell.pipe2.outDirection}}</span>
+                <span ng-show="cell.pipe1">
+                    <!--pipe1 {{cell.pipe1.inDirection}} {{cell.pipe1.outDirection}}-->
+                    <img src="/images/pipe-horizontal.png" />
+                </span>
+                <span ng-show="cell.pipe2">
+                    pipe2 {{cell.pipe2.inDirection}} {{cell.pipe2.outDirection}}
+                </span>
             </div>
 
             <!-- left pipe connector -->

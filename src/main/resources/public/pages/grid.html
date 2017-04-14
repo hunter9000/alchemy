@@ -18,11 +18,14 @@
         <!-- CELL GRID -->
         <div class="col-md-6">
             <div ng-repeat="row in grid.cells" >
+                <!--style="height:64px;"-->
+
                 <cell ng-repeat="cell in row"
                       cell="cell"
                       col="{{$index}}"
                       row="{{$parent.$index}}"
                       />
+                    <!--style="margin:-4px;"-->
             </div>
         </div>
 
@@ -65,8 +68,12 @@
 
 
 <button clas="btn btn-secondary" ng-click="delete()">delete</button>
-<button clas="btn btn-secondary" ng-click="start()">start</button>
 
+<button clas="btn btn-secondary" ng-click="start()" ng-show="!grid.lastTick">start</button>
+<button clas="btn btn-secondary" ng-click="stop()" ng-show="grid.lastTick">stop</button>
+
+
+{{grid.lastTick}}
 {{errors}}
 
 <!--&lt;!&ndash; drag &ndash;&gt;-->

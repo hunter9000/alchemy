@@ -2,11 +2,10 @@
 alchApp.controller('gridController', function(APIService, GridService, $scope, $location, $routeParams) {
 
     $scope.grid = {};
-
     $scope.droppedUnit = null;
 
     $scope.loadGrid = function() {
-    //https://github.com/rclayton/NG-Communicate-Ctrls/blob/master/service/index.html
+        //https://github.com/rclayton/NG-Communicate-Ctrls/blob/master/service/index.html
 
         APIService.getGrid($routeParams.gridId, function(response) {
             $scope.grid = response.data;
@@ -17,13 +16,6 @@ alchApp.controller('gridController', function(APIService, GridService, $scope, $
     $scope.$on("grid.update", function(e, kvp){
         $scope.grid = kvp.grid;
     });
-
-//
-//    $scope.purchaseUnit = function(unit) {
-//        APIService.purchaseUnit($routeParams.gridId, unit.id, GridService.getUnitPurchaseData(unit.id), function(response) {
-//            $scope.loadGrid();
-//        })
-//    }
 
     /** unit has been dragged from the grid to here, unplace it. */
     $scope.drop = function() {
@@ -38,12 +30,14 @@ alchApp.controller('gridController', function(APIService, GridService, $scope, $
     }
 
     $scope.start = function() {
-        APIService.startGrid($routeParams.gridId,
-        function(response) {        // success
-            $scope.errors = 'no errors';
-        },
-        function(response) {        // failure
-            $scope.errors = response.data.cellErrors;
+        APIService.startGrid($routeParams.gridId, function(response) {
+            $scope.grid = response.data;
+        });
+    }
+
+    $scope.stop = function() {
+        APIService.stopGrid($routeParams.gridId, function(response) {
+            $scope.grid = response.data;
         });
     }
 

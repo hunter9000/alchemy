@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.collections4.CollectionUtils;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
@@ -51,9 +51,9 @@ public class Grid {
     @Column(name = "height", nullable = false)
     private Integer height;
 
-//    @Temporal(value = TemporalType.TIMESTAMP)
+    @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "last_tick")
-    private LocalDateTime lastTick = null;
+    private Date lastTick = null;
 
     @Transient
     private Cell[][] cells;
@@ -128,10 +128,10 @@ public class Grid {
         this.height = height;
     }
 
-    public LocalDateTime getLastTick() {
+    public Date getLastTick() {
         return lastTick;
     }
-    public void setLastTick(LocalDateTime lastTick) {
+    public void setLastTick(Date lastTick) {
         this.lastTick = lastTick;
     }
 

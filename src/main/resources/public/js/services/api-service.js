@@ -113,7 +113,9 @@ alchApp.factory('APIService', function($window, $location, $http, $log) {
         startGrid(gridId, successCallback, failureCallback) {
             post('/api/grid/'+gridId+'/timer/', {}, successCallback, failureCallback);
         },
-
+        stopGrid(gridId, successCallback) {
+            deleteCall('/api/grid/'+gridId+'/timer/', successCallback);
+        },
 
     };
 });
