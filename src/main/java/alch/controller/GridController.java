@@ -46,7 +46,15 @@ public class GridController {
     @RequestMapping(value = "/api/grid/{gridId}/", method = RequestMethod.GET)
     public Grid getGrid(@PathVariable Long gridId) {
         Grid grid = gridRepository.findOne(gridId);
-        new GridManager(grid).populateGrid();
+
+        GridManager manager = new GridManager(grid);
+
+        if (grid.getLastTick() != null) {
+            manager.updateTicks();
+            gridRepository.save(grid);
+        }
+
+        manager.populateGrid();
         return grid;
     }
 

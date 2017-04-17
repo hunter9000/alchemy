@@ -3,16 +3,25 @@ package alch.manager;
 import alch.model.*;
 import alch.model.user.UnitDefinitionType;
 import alch.model.user.User;
+import alch.security.BadRequestException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class GridManager {
+
+    private static final Logger logger = LoggerFactory.getLogger(GridManager.class);
 
     private Grid grid;
 
     public GridManager(Grid grid) {
         this.grid = grid;
     }
+
+    private static final int SECONDS_PER_TICK = 5;
 
     public static Grid createGrid(User owner) {
         Grid grid = new Grid();
@@ -22,10 +31,10 @@ public class GridManager {
             ResourceInventory inv = new ResourceInventory();
             inv.setGrid(grid);
             if (rType == ResourceType.WOOD) {
-                inv.setAmount(80);
+                inv.setAmount(80l);
             }
             else {
-                inv.setAmount(0);
+                inv.setAmount(0l);
             }
             inv.setType(rType);
             inventory.put(rType, inv);
@@ -148,6 +157,65 @@ public class GridManager {
         return null;
     }
 
+    public void updateTicks() {
+        // if the last tick is set, figure out how many tick lengths have passed, add that many ticks worth of inventory, set last tick forward by the number of ticks,
+        if (grid.getLastTick() != null) {
+            this.populateGrid();
+
+            Instant lastTickInstant = grid.getLastTick().toInstant();
+            Instant now = Instant.now();
+
+            if (now.isBefore(lastTickInstant)) {
+                throw new BadRequestException();
+            }
+
+            logger.debug("(grid.getLastTick() {}", grid.getLastTick());
+
+//            LocalDate lastTickLocalDate = LocalDateTime.ofInstant(grid.getLastTick().toInstant(), ZoneId.systemDefault()).toLocalDate();
+//            Period span = Period.between(lastTickLocalDate, LocalDate.now());
+
+//            logger.debug("LocalDateTime.now() {}", LocalDateTime.now());
+            logger.debug("Instant.now() {}", Instant.now());
+
+//            long secondsBetweenLocalDateTime = ChronoUnit.SECONDS.between(LocalDateTime.ofInstant(grid.getLastTick().toInstant(), ZoneId.systemDefault()), LocalDateTime.now());
+
+            long secondsBetweenInstant = ChronoUnit.SECONDS.between(lastTickInstant, now);
+
+//            logger.debug("secondsBetweenLocalDateTime {}", secondsBetweenLocalDateTime);
+            logger.debug("secondsBetweenInstant {}", secondsBetweenInstant);
+
+            long numTicks = (long)(secondsBetweenInstant / (float)SECONDS_PER_TICK);
+            long numSecondsPassedInTicks = numTicks * SECONDS_PER_TICK;
+
+            long secondsLeftOverFromTicks = secondsBetweenInstant - numSecondsPassedInTicks;
+
+            Instant newTickInstant = now.minusSeconds(secondsLeftOverFromTicks);
+
+            grid.setLastTick(java.util.Date.from(newTickInstant));
+
+            this.addTicksToInventory(numTicks);
 
 
+
+        }
+    }
+
+    private void addTicksToInventory(long numTicks) {
+        List<ProductionPath> paths = new GridProcessingManager(grid).getPaths();
+
+        // get all the stockpile resource types
+        List<ResourceType> typesToCreate = new ArrayList<>();
+        for (ProductionPath path : paths) {
+            for (Unit u : path.getStockpiles()) {
+                for (UnitConnection conn : u.getOutputConnections()) {
+                    typesToCreate.add(conn.getResourceType());
+                }
+            }
+        }
+
+        // add numTicks number of each resource type
+        for (ResourceType type : typesToCreate) {
+            grid.getResourceInventory().get(type).addAmount(numTicks);
+        }
+    }
 }

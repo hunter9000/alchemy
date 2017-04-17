@@ -1,5 +1,6 @@
 package alch.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -22,7 +23,7 @@ public class ResourceInventory {
     private ResourceType type;
 
     @Column(name = "amount", nullable = false)
-    private Integer amount;
+    private Long amount;
 
     public Long getId() {
         return id;
@@ -45,10 +46,16 @@ public class ResourceInventory {
         this.type = type;
     }
 
-    public Integer getAmount() {
+    public Long getAmount() {
         return amount;
     }
-    public void setAmount(Integer amount) {
+    public void setAmount(Long amount) {
         this.amount = amount;
+    }
+
+    @Transient
+    @JsonIgnore
+    public void addAmount(long addAmount) {
+        this.amount += addAmount;
     }
 }
