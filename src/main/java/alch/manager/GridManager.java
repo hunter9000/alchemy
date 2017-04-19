@@ -207,7 +207,7 @@ public class GridManager {
         List<ResourceType> typesToCreate = new ArrayList<>();
         for (ProductionPath path : paths) {
             for (Unit u : path.getStockpiles()) {
-                for (UnitConnection conn : u.getOutputConnections()) {
+                for (UnitConnection conn : u.getInputConnections()) {
                     typesToCreate.add(conn.getResourceType());
                 }
             }

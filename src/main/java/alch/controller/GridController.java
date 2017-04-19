@@ -186,7 +186,8 @@ public class GridController {
         }
 
         // process ticks one last time
-
+        GridManager manager = new GridManager(grid);
+        manager.updateTicks();
 
         grid.setLastTick(null);
         gridRepository.save(grid);
