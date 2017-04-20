@@ -1,0 +1,16 @@
+<!-- pipe connector {{direction}} -->
+<div class="unit-wrapper pipe-connector {{css()}}"
+     data-drop="true"
+     data-jqyoui-options="{'scope': 'pipes{{col}}{{row}}'}"
+     jqyoui-droppable="{'onDrop': 'pipeDrop'}"
+     ng-model="direction">
+
+    <div class="pipe-connector pipe-connector-inner"
+         data-drag="true"
+         data-jqyoui-options="{revert: 'invalid', 'scope': 'pipes{{col}}{{row}}'}"
+         jqyoui-draggable="{onStart: 'startDragging(direction, $index)'}"
+         ng-model="direction"
+         ng-click="removePipe(direction)">
+
+    </div>
+</div>
