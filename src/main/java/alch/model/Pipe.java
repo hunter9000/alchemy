@@ -101,4 +101,14 @@ public class Pipe {
         this.outDirection = outDirection;
     }
 
+    /** gets the direction that you exit this pipe if entering from given dir. doesn't care which is in or out direction */
+    public DirectionType getExitDirection(DirectionType entryDir) {
+        if (inDirection.opposite() == entryDir) {
+            return outDirection;
+        }
+        if (outDirection.opposite() == entryDir) {
+            return inDirection;
+        }
+        return null;
+    }
 }

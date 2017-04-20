@@ -58,6 +58,10 @@ public class Grid {
     @Transient
     private Cell[][] cells;
 
+    // convinience flag for if any path errors happened. the cells will have the individual errors
+    @Transient
+    private boolean hasErrors;
+
     @Transient
     @JsonIgnore
     public Collection<Unit> getPlacedUnits() {
@@ -140,5 +144,12 @@ public class Grid {
     }
     public void setCells(Cell[][] cells) {
         this.cells = cells;
+    }
+
+    public void setHasErrors(boolean hasErrors) {
+        this.hasErrors = hasErrors;
+    }
+    public boolean isHasErrors() {
+        return hasErrors;
     }
 }

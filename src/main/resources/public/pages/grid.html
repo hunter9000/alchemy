@@ -60,10 +60,18 @@
 
     <!-- purchasable units -->
     <div class="row">
-        <div ng-repeat="unit in grid.purchasableUnits" class="cell-wrapper inline-block">
+        <div ng-repeat="unit in grid.purchasableUnits | filter: {canAfford: true}" class="cell-wrapper inline-block">
             <unit unit="unit" />
         </div>
     </div>
+
+    <!-- almost purchasable units -->
+    <div class="row">
+        <div ng-repeat="unit in grid.purchasableUnits | filter: {canAfford: false}" class="cell-wrapper inline-block">
+            <unit unit="unit" />
+        </div>
+    </div>
+
 </div>
 
 

@@ -1,8 +1,10 @@
 
-alchApp.controller('gridController', function(APIService, GridService, $scope, $location, $routeParams) {
+alchApp.controller('gridController', function(APIService, GridService, $scope, $location, $interval, $routeParams, $log) {
 
     $scope.grid = {};
     $scope.droppedUnit = null;
+
+    $scope.timerPromise = null;
 
     $scope.loadGrid = function() {
         //https://github.com/rclayton/NG-Communicate-Ctrls/blob/master/service/index.html
@@ -32,13 +34,22 @@ alchApp.controller('gridController', function(APIService, GridService, $scope, $
     $scope.start = function() {
         APIService.startGrid($routeParams.gridId, function(response) {
             $scope.grid = response.data;
+            if (!$scope.grid.hasErrors) {
+                $scope.timerPromise = $interval(function(){ $scope.updateTimer(); }, 1000);
+            }
         });
     }
 
     $scope.stop = function() {
         APIService.stopGrid($routeParams.gridId, function(response) {
             $scope.grid = response.data;
+            $interval.cancel($scope.timerPromise);
         });
+    }
+
+    $scope.updateTimer = function() {
+        $log.debug('updating timer');
+        $scope.loadGrid();
     }
 
 })

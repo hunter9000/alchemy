@@ -165,6 +165,7 @@ public class GridController {
         List<ProductionPath> paths = manager.getPaths();
 
         if (manager.hasErrors()) {
+            grid.setHasErrors(true);
             for (CellError error : manager.getCellErrors()) {
                 grid.getCells()[error.row][error.col].addMessage(error.errorMessage);
             }

@@ -1,6 +1,5 @@
 package alch.model;
 
-import alch.model.user.UnitDefinitionType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

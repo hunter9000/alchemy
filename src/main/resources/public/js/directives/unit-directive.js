@@ -32,6 +32,23 @@ alchApp.directive('unit', function(APIService, GridService, $routeParams) {
                     GridService.unplaceUnit($routeParams.gridId, $scope.unit.id);
                 }
             }
+
+            $scope.getLabel = function() {
+                var ret = '';
+                if ($scope.unit) {
+                    for (i=0; i<$scope.unit.definitionType.unitConnections.length; i++) {
+                        var conn = $scope.unit.definitionType.unitConnections[i];
+                        if (conn.input) {
+                            ret += 'I:';
+                        }
+                        else {
+                            ret += 'O:';
+                        }
+                        ret += conn.resourceType.displayName + ' ';
+                    }
+                }
+                return ret;
+            }
         },
     }
 });

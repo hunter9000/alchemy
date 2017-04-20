@@ -184,7 +184,7 @@ public class GridProcessingManager {
             return ret;
         }
         else /*if (neighborCell.isPipe())*/ {
-            Pipe connectedPipe = IterableUtils.find(neighborCell.getAllPipes(), (Pipe pipe) -> pipe.getInDirection().opposite() == entryDir );
+            Pipe connectedPipe = IterableUtils.find(neighborCell.getAllPipes(), (Pipe pipe) -> pipe.getExitDirection(entryDir) != null );
 
 //            for (Pipe pipe : neighborCell.getAllPipes()) {
 //                if (pipe.getInDirection().opposite() == entryDir) {     // connection is good
@@ -198,7 +198,7 @@ public class GridProcessingManager {
                 return null;
             }
 
-            return getConnectedNeighborCell(neighborRow, neighborCol, connectedPipe.getOutDirection());
+            return getConnectedNeighborCell(neighborRow, neighborCol, connectedPipe.getExitDirection(entryDir));
         }
 //        else {
 //            // error, no pipe connected to this one, add this cell to the errors and return null

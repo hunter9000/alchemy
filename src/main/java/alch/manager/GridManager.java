@@ -1,7 +1,7 @@
 package alch.manager;
 
 import alch.model.*;
-import alch.model.user.UnitDefinitionType;
+import alch.model.UnitDefinitionType;
 import alch.model.user.User;
 import alch.security.BadRequestException;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ public class GridManager {
         this.grid = grid;
     }
 
-    private static final int SECONDS_PER_TICK = 5;
+    private static final int SECONDS_PER_TICK = 1;
 
     public static Grid createGrid(User owner) {
         Grid grid = new Grid();
@@ -43,18 +43,20 @@ public class GridManager {
         Set<Unit> units = new HashSet<>();
         // sources
         units.add(createUnit(grid, UnitDefinitionType.SOURCE_WOOD ));
-//        units.add(createUnit(grid, UnitDefinitionType.SOURCE_DIRT ));
-//        units.add(createUnit(grid, UnitDefinitionType.SOURCE_GRASS ));
-//        units.add(createUnit(grid, UnitDefinitionType.SOURCE_ROCK ));
-//        units.add(createUnit(grid, UnitDefinitionType.SOURCE_WATER ));
+        units.add(createUnit(grid, UnitDefinitionType.SOURCE_DIRT ));
+        units.add(createUnit(grid, UnitDefinitionType.SOURCE_GRASS ));
+        units.add(createUnit(grid, UnitDefinitionType.SOURCE_ROCK ));
+        units.add(createUnit(grid, UnitDefinitionType.SOURCE_WATER ));
         // transmuters
         units.add(createUnit(grid, UnitDefinitionType.TRANSMUTER_WOOD_DIRT));
         // dual transumters
 //        units.add(createUnit(grid, UnitDefinitionType.DUAL_TRANSMUTER_WOOD_DIRT_GRASS));
         // stockpiles
-//        units.add(createUnit(grid, UnitDefinitionType.STOCKPILE_WOOD));
+        units.add(createUnit(grid, UnitDefinitionType.STOCKPILE_WOOD));
         units.add(createUnit(grid, UnitDefinitionType.STOCKPILE_DIRT));
-//        units.add(createUnit(grid, UnitDefinitionType.STOCKPILE_GRASS));
+        units.add(createUnit(grid, UnitDefinitionType.STOCKPILE_GRASS));
+        units.add(createUnit(grid, UnitDefinitionType.STOCKPILE_ROCK));
+        units.add(createUnit(grid, UnitDefinitionType.STOCKPILE_WATER));
 
         grid.setUnits(units);
 

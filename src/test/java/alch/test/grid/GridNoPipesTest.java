@@ -6,7 +6,7 @@ import alch.manager.ProductionPath;
 import alch.model.Grid;
 import alch.model.Pipe;
 import alch.model.Unit;
-import alch.model.user.UnitDefinitionType;
+import alch.model.UnitDefinitionType;
 import alch.model.user.User;
 import alch.test.util.GridTestUtils;
 import org.junit.Assert;

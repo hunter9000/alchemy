@@ -15,10 +15,17 @@
 
         <!-- purchase cost -->
         <div class="unit-wrapper">
-            <span ng-show="!unit.purchased">
-                Cost: {{unit.costAmount}} {{unit.costResourceType.displayName}}
-                afford:{{unit.canAfford}}
-            </span>
+            <!--<span>-->
+            <div>
+                {{unit.definitionType.unitType.substring(0, 3)}}
+                {{getLabel()}}
+            </div>
+                <!--Cost:-->
+            <div ng-show="!unit.purchased">
+                {{unit.costAmount}} {{unit.costResourceType.displayName}}
+            </div>
+                <!--afford:{{unit.canAfford}}-->
+            <!--</span>-->
         </div>
 
     </div>

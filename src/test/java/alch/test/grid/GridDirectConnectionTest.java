@@ -18,8 +18,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
-public class GridWellConnectedTest {
+/** connects a wood source to a wood stockpile with a single pipe. */
+public class GridDirectConnectionTest {
 
     Grid grid;
 
@@ -28,35 +28,26 @@ public class GridWellConnectedTest {
         this.grid = GridManager.createGrid(new User());
 
         Unit woodSource = null;
-        Unit woodDirtTransmuter = null;
-        Unit dirtStockpile = null;
+        Unit woodStockpile = null;
 
-        Pipe sourceTransmuterPipe = null;
-        Pipe transmuterStockpilePipe = null;
+        Pipe pipe = null;
 
         woodSource = GridTestUtils.findUnitByTypeForTesting(grid, UnitDefinitionType.SOURCE_WOOD);
-        woodDirtTransmuter = GridTestUtils.findUnitByTypeForTesting(grid, UnitDefinitionType.TRANSMUTER_WOOD_DIRT);
-        dirtStockpile = GridTestUtils.findUnitByTypeForTesting(grid, UnitDefinitionType.STOCKPILE_DIRT);
+        woodStockpile = GridTestUtils.findUnitByTypeForTesting(grid, UnitDefinitionType.STOCKPILE_WOOD);
 
         Assert.assertNotNull("wood source not found", woodSource);
-        Assert.assertNotNull("wood -> dirt transmuter not found", woodDirtTransmuter);
-        Assert.assertNotNull("dirt stockpile not found", dirtStockpile);
+        Assert.assertNotNull("wood stockpile not found", woodStockpile);
 
         woodSource.setRow(0);
         woodSource.setCol(0);
 
-        woodDirtTransmuter.setRow(0);
-        woodDirtTransmuter.setCol(2);
+        woodStockpile.setRow(1);
+        woodStockpile.setCol(1);
 
-        dirtStockpile.setRow(1);
-        dirtStockpile.setCol(3);
-
-        sourceTransmuterPipe = GridTestUtils.createPipeForTesting(0, 1, DirectionType.WEST, DirectionType.EAST);
-        transmuterStockpilePipe = GridTestUtils.createPipeForTesting(0, 3, DirectionType.WEST, DirectionType.SOUTH);
+        pipe = GridTestUtils.createPipeForTesting(0, 1, DirectionType.SOUTH, DirectionType.WEST);
 
         Set<Pipe> pipes = new HashSet<>();
-        pipes.add(sourceTransmuterPipe);
-        pipes.add(transmuterStockpilePipe);
+        pipes.add(pipe);
         grid.setPipes(pipes);
 
         new GridManager(grid).populateGrid();

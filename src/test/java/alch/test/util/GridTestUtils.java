@@ -4,7 +4,7 @@ import alch.model.DirectionType;
 import alch.model.Grid;
 import alch.model.Pipe;
 import alch.model.Unit;
-import alch.model.user.UnitDefinitionType;
+import alch.model.UnitDefinitionType;
 
 public class GridTestUtils {
     public static Unit findUnitByTypeForTesting(Grid grid, UnitDefinitionType type) {
